@@ -86,6 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="34dp"
         android:layout_marginEnd="19dp"
+        android:onClick="onclick_menu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/menu_button" />

@@ -4,10 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +23,7 @@ import android.widget.Toast;
 
 import com.goormthon_univ.tomado.Adapter.BreakTimeSel;
 import com.goormthon_univ.tomado.Adapter.BreakTimeSelAdapter;
+import com.goormthon_univ.tomado.Adapter.MenuAdapter;
 import com.goormthon_univ.tomado.Thread.TimerThread;
 
 import java.util.Timer;
@@ -227,5 +233,25 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         timer.schedule(pause_task,60000);
+    }
+
+    public void onclick_menu(View view){
+        Dialog menu_dialog=new Dialog(MainActivity.this);
+        menu_dialog.setContentView(R.layout.dialog_menu);
+        menu_dialog.getWindow().setGravity(Gravity.RIGHT);
+        menu_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.MATCH_PARENT);
+        menu_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+
+        //리사이클러뷰 어뎁터 연결
+        RecyclerView menu_recyclerview=menu_dialog.findViewById(R.id.menu_recyclerview);
+
+        MenuAdapter menu_adapter=new MenuAdapter();
+
+        LinearLayoutManager layoutManager=new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL,false);
+        menu_recyclerview.setLayoutManager(layoutManager);
+        menu_recyclerview.setAdapter(menu_adapter);
+
+        menu_dialog.show();
     }
 }
