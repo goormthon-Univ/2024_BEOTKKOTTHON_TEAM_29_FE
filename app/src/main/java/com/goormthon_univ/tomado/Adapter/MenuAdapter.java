@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.goormthon_univ.tomado.DashboardActivity;
+import com.goormthon_univ.tomado.FriendActivity;
 import com.goormthon_univ.tomado.MemoActivity;
 import com.goormthon_univ.tomado.R;
 
@@ -65,8 +66,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
                         context.startActivity(intent_dashboardactivity);
                         break;
                     case 1:
-                        //
-                        Toast.makeText(context,"E: 함께하기-추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
+                        Intent intent_friendactivity=new Intent(context, FriendActivity.class);
+                        intent_friendactivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent_friendactivity);
                         break;
                     case 2:
                         //
