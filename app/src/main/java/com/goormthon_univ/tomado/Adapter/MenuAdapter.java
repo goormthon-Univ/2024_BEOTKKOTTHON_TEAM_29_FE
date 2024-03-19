@@ -1,5 +1,7 @@
 package com.goormthon_univ.tomado.Adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.goormthon_univ.tomado.DashboardActivity;
 import com.goormthon_univ.tomado.R;
 
 import java.util.ArrayList;
@@ -19,7 +22,9 @@ import java.util.ArrayList;
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
     ArrayList<Menu> items=new ArrayList<>();
 
-    public MenuAdapter(){
+    Context context;
+
+    public MenuAdapter(Context context){
         Menu m1=new Menu(R.drawable.dashboard,"모아보기");
         Menu m2=new Menu(R.drawable.user_friends,"함께하기");
         Menu m3=new Menu(R.drawable.dictionary_language_book,"토마보감");
@@ -30,6 +35,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
         items.add(m3);
         items.add(m4);
         items.add(m5);
+
+        this.context=context;
     }
 
     @NonNull
@@ -52,18 +59,25 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
                 switch(position){
                     case 0:
                         //
+                        Intent intent_dashboardactivity=new Intent(context, DashboardActivity.class);
+                        intent_dashboardactivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent_dashboardactivity);
                         break;
                     case 1:
                         //
+                        Toast.makeText(context,"E: 추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
                         //
+                        Toast.makeText(context,"E: 추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
                         //
+                        Toast.makeText(context,"E: 추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 4:
                         //
+                        Toast.makeText(context,"E: 추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                 }
                 notifyDataSetChanged();

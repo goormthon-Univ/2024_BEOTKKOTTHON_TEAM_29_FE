@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
         //리사이클러뷰 어뎁터 연결
         RecyclerView menu_recyclerview=menu_dialog.findViewById(R.id.menu_recyclerview);
 
-        MenuAdapter menu_adapter=new MenuAdapter();
+        MenuAdapter menu_adapter=new MenuAdapter(getApplicationContext());
 
         LinearLayoutManager layoutManager=new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL,false);
