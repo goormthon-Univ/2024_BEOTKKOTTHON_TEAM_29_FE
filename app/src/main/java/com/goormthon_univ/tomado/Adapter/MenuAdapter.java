@@ -1,5 +1,6 @@
 package com.goormthon_univ.tomado.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.goormthon_univ.tomado.DashboardActivity;
+import com.goormthon_univ.tomado.MemoActivity;
 import com.goormthon_univ.tomado.R;
 
 import java.util.ArrayList;
@@ -58,26 +60,26 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
             public void onClick(View v) {
                 switch(position){
                     case 0:
-                        //
                         Intent intent_dashboardactivity=new Intent(context, DashboardActivity.class);
                         intent_dashboardactivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent_dashboardactivity);
                         break;
                     case 1:
                         //
-                        Toast.makeText(context,"E: 추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"E: 함께하기-추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
                         //
-                        Toast.makeText(context,"E: 추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"E: 토마보감-추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
                         //
-                        Toast.makeText(context,"E: 추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"E: 토마상점-추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 4:
-                        //
-                        Toast.makeText(context,"E: 추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
+                        Intent intent_memoactivity=new Intent(context, MemoActivity.class);
+                        intent_memoactivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent_memoactivity);
                         break;
                 }
                 notifyDataSetChanged();
