@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         main_memo_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"메모",Toast.LENGTH_LONG).show();
+                onclick_memo_dialog();
             }
         });
 
@@ -287,5 +287,18 @@ public class MainActivity extends AppCompatActivity {
         category_adapter.notifyDataSetChanged();
 
         menu_dialog.show();
+    }
+
+    public void onclick_memo_dialog(){
+        Dialog memo_dialog=new Dialog(MainActivity.this);
+        memo_dialog.setContentView(R.layout.dialog_memo);
+        memo_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        memo_dialog.findViewById(R.id.dialog_memo_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                memo_dialog.dismiss();
+            }
+        });
+        memo_dialog.show();
     }
 }
