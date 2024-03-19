@@ -31,7 +31,7 @@ public class DashboardActivity extends AppCompatActivity {
         //리사이클러뷰 어뎁터 연결
         dashboard_category_recyclerview=findViewById(R.id.dashboard_category_recyclerview);
 
-        CategoryAdapter category_adapter=new CategoryAdapter();
+        CategoryAdapter category_adapter=new CategoryAdapter(null,2);
 
         GridLayoutManager layoutManager=new GridLayoutManager(this,2);
         dashboard_category_recyclerview.setLayoutManager(layoutManager);

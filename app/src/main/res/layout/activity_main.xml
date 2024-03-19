@@ -55,13 +55,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="109dp"
+        android:onClick="onclick_category_dialog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/category_rectangle" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/main_category_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="프로그래밍 기초"

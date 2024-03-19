@@ -1,6 +1,7 @@
 package com.goormthon_univ.tomado;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +24,8 @@ import android.widget.Toast;
 
 import com.goormthon_univ.tomado.Adapter.BreakTimeSel;
 import com.goormthon_univ.tomado.Adapter.BreakTimeSelAdapter;
+import com.goormthon_univ.tomado.Adapter.Category;
+import com.goormthon_univ.tomado.Adapter.CategoryAdapter;
 import com.goormthon_univ.tomado.Adapter.MenuAdapter;
 import com.goormthon_univ.tomado.Thread.TimerThread;
 
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView main_gradient;
     ImageView main_breaktime_arrow;
     Switch main_mode_switch;
+    TextView main_category_text;
 
     //Handler 객체 생성
     Handler handler=new Handler();
@@ -78,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         main_gradient=findViewById(R.id.main_gradient);
         main_mode_switch=findViewById(R.id.main_mode_switch);
         main_breaktime_arrow=findViewById(R.id.main_breaktime_arrow);
+        main_category_text=findViewById(R.id.main_category_text);
 
         //리사이클러뷰 어뎁터 연결
         RecyclerView main_breaktime_recyclerview=findViewById(R.id.main_breaktime_recyclerview);
@@ -251,6 +256,35 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayoutManager.VERTICAL,false);
         menu_recyclerview.setLayoutManager(layoutManager);
         menu_recyclerview.setAdapter(menu_adapter);
+
+        menu_dialog.show();
+    }
+
+    public void onclick_category_dialog(View view){
+        Dialog menu_dialog=new Dialog(MainActivity.this);
+        menu_dialog.setContentView(R.layout.dialog_category_main);
+        menu_dialog.getWindow().setGravity(Gravity.BOTTOM);
+        menu_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+
+        //리사이클러뷰 어뎁터 연결
+        RecyclerView dialog_category_main_recyclerview=menu_dialog.findViewById(R.id.dialog_category_main_recyclerview);
+
+        CategoryAdapter category_adapter=new CategoryAdapter(main_category_text,1);
+
+        GridLayoutManager layoutManager=new GridLayoutManager(this,2);
+        dialog_category_main_recyclerview.setLayoutManager(layoutManager);
+        dialog_category_main_recyclerview.setAdapter(category_adapter);
+
+        Category c_1=new Category("프로그래밍 기초","color",5);
+        Category c_2=new Category("오픽","color",8);
+        Category c_3=new Category("독서","color",0);
+        Category c_4=new Category("시험 공부","color",8);
+
+        category_adapter.addItem(c_1);
+        category_adapter.addItem(c_2);
+        category_adapter.addItem(c_3);
+        category_adapter.addItem(c_4);
+        category_adapter.notifyDataSetChanged();
 
         menu_dialog.show();
     }
