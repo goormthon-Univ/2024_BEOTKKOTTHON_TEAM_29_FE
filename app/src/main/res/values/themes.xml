@@ -5,5 +5,9 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.TomaDO" parent="Base.Theme.TomaDO" />
+    <style name="Theme.TomaDO" parent="Base.Theme.TomaDO" >
+        <item name="colorPrimaryDark">@color/white</item>
+        <!--상단바 아이콘이 안보이는 오류 해결-->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
 </resources>
