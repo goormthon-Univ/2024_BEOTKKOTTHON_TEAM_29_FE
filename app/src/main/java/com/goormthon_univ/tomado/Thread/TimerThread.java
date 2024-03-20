@@ -25,6 +25,10 @@ public class TimerThread extends Thread{
     //타이머 일시 중지 여부
     public static boolean timer_pause;
 
+    //타이머와 타이머 태스크
+    Timer timer;
+    TimerTask timer_task;
+
     public TimerThread(TextView textview,ProgressBar main_progressbar,Handler handler,int min,int sec){
         this.textview=textview;
         this.main_progressbar=main_progressbar;
@@ -34,11 +38,17 @@ public class TimerThread extends Thread{
 
         timer_pause=false;
     }
+
+    public void timer_stop(){
+        //타이머 중단을 위한 변수
+        timer.cancel();
+    }
     public void run(){
-        Timer timer=new Timer();
-        TimerTask timer_task=new TimerTask() {
+        timer=new Timer();
+        timer_task=new TimerTask() {
             @Override
             public void run() {
+                Log.i("TimerThread","타이머 작동 중");
                 handler.post(new Runnable() {
                     @Override
                     public void run() {

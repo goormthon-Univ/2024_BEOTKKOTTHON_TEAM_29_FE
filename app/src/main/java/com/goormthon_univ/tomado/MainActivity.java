@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //1분 뒤에 작동
-                timer_th.interrupt();
+                timer_th.timer_stop();
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
