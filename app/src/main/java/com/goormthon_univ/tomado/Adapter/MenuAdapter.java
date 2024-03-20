@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.goormthon_univ.tomado.DashboardActivity;
+import com.goormthon_univ.tomado.DictionaryActivity;
 import com.goormthon_univ.tomado.FriendActivity;
 import com.goormthon_univ.tomado.MemoActivity;
 import com.goormthon_univ.tomado.R;
@@ -70,11 +71,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
                         intent_friendactivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent_friendactivity);
                         //TODO
-                        Toast.makeText(context,"서버와 연결되지 않은 기능입니다",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"함께하기: 서버와 연결되지 않은 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
-                        //
-                        Toast.makeText(context,"E: 토마보감-추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
+                        Intent intent_dictionaryactivity=new Intent(context, DictionaryActivity.class);
+                        intent_dictionaryactivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent_dictionaryactivity);
+                        //TODO
+                        Toast.makeText(context,"토마보감: 서버와 연결되지 않은 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
                         //
