@@ -20,6 +20,7 @@ import com.goormthon_univ.tomado.DictionaryActivity;
 import com.goormthon_univ.tomado.FriendActivity;
 import com.goormthon_univ.tomado.MemoActivity;
 import com.goormthon_univ.tomado.R;
+import com.goormthon_univ.tomado.StoreActivity;
 
 import java.util.ArrayList;
 
@@ -81,8 +82,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
                         Toast.makeText(context,"토마보감: 서버와 연결되지 않은 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
-                        //
-                        Toast.makeText(context,"E: 토마상점-추가 예정인 기능입니다",Toast.LENGTH_SHORT).show();
+                        Intent intent_storeactivity=new Intent(context, StoreActivity.class);
+                        intent_storeactivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent_storeactivity);
+                        //TODO
+                        Toast.makeText(context,"토마상점: 서버와 연결되지 않은 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 4:
                         Intent intent_memoactivity=new Intent(context, MemoActivity.class);
