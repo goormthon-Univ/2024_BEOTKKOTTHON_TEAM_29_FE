@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -26,8 +28,14 @@ import com.goormthon_univ.tomado.Adapter.BreakTimeSel;
 import com.goormthon_univ.tomado.Adapter.BreakTimeSelAdapter;
 import com.goormthon_univ.tomado.Adapter.Category;
 import com.goormthon_univ.tomado.Adapter.CategoryAdapter;
+import com.goormthon_univ.tomado.Adapter.Memo;
 import com.goormthon_univ.tomado.Adapter.MenuAdapter;
+import com.goormthon_univ.tomado.Server.ServerManager;
 import com.goormthon_univ.tomado.Thread.TimerThread;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -64,10 +72,18 @@ public class MainActivity extends AppCompatActivity {
     //이지 뽀모도로 모드 체크 변수
     private boolean pomodoro_mode;
 
+    ServerManager server_manager;
+
+    //유저 아이디(임시 설정)
+    int user_id=35;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //서버 연동 객체 추가
+        server_manager=new ServerManager(getApplicationContext());
 
         //메인에 있는 뷰들 연결
         main_time=findViewById(R.id.main_time);
@@ -247,6 +263,28 @@ public class MainActivity extends AppCompatActivity {
         menu_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.MATCH_PARENT);
         menu_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
 
+        //서버에서 불러오기
+        try {
+            JSONObject json=new JSONObject(server_manager.http_request_get_json("/users/"+user_id));
+            JSONObject data=new JSONObject(json.get("data").toString());
+
+            if(json.get("message").toString().equals("회원 조회 성공")){
+                //뷰 연결하고
+                TextView dialog_menu_nickname=menu_dialog.findViewById(R.id.dialog_menu_nickname);
+                TextView dialog_menu_tomato=menu_dialog.findViewById(R.id.dialog_menu_tomato);
+
+                //텍스트,이미지 설정
+                dialog_menu_nickname.setText(data.get("nickname").toString());
+                dialog_menu_tomato.setText(data.get("tomato").toString());
+
+            }else{
+                //회원 조회 실패 시 실패 원인 보여줌
+                Toast.makeText(getApplicationContext(),json.get("message").toString(),Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
         //리사이클러뷰 어뎁터 연결
         RecyclerView menu_recyclerview=menu_dialog.findViewById(R.id.menu_recyclerview);
 
@@ -275,10 +313,34 @@ public class MainActivity extends AppCompatActivity {
         dialog_category_main_recyclerview.setLayoutManager(layoutManager);
         dialog_category_main_recyclerview.setAdapter(category_adapter);
 
-        Category c_1=new Category("프로그래밍 기초","color",5);
-        Category c_2=new Category("오픽","color",8);
-        Category c_3=new Category("독서","color",0);
-        Category c_4=new Category("시험 공부","color",8);
+        Category c_1=new Category("0","프로그래밍 기초","color",5);
+        Category c_2=new Category("0","오픽","color",8);
+        Category c_3=new Category("0","독서","color",0);
+        Category c_4=new Category("0","시험 공부","color",8);
+
+        //서버에서 불러오기
+        try {
+            JSONObject json=new JSONObject(server_manager.http_request_get_json("/categories/"+user_id));
+
+            if(json.get("message").toString().equals("카테고리 조회 성공")){
+                JSONObject json_data=new JSONObject(json.get("data").toString());
+                JSONArray category_list_array=new JSONArray(json_data.get("categoryList").toString());
+
+                for(int i=0;i< category_list_array.length();i++){
+                    JSONObject data=new JSONObject(category_list_array.get(i).toString());
+                    Category category=new Category(data.get("category_id").toString(),
+                            data.get("title").toString(),
+                            data.get("color").toString(),
+                            Integer.parseInt(data.get("tomato").toString()));
+                    category_adapter.addItem(category);
+                }
+            }else{
+                //메모 조회 실패 시 실패 원인 보여줌
+                Toast.makeText(getApplicationContext(),json.get("message").toString(),Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
         category_adapter.addItem(c_1);
         category_adapter.addItem(c_2);
@@ -299,6 +361,30 @@ public class MainActivity extends AppCompatActivity {
                 memo_dialog.dismiss();
             }
         });
+
+        //화면 바깥 부분을 누르거나 닫을 경우 저장되도록 설정
+        memo_dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                EditText dialog_memo_content=memo_dialog.findViewById(R.id.dialog_memo_content);
+                JSONObject parms=new JSONObject();
+                try {
+                    parms.put("content",dialog_memo_content.getText());
+                    JSONObject json=new JSONObject(server_manager.http_request_post_json("/memos/"+user_id,parms));
+
+                    if(json.get("message").toString().equals("메모 작성 성공")){
+                        Toast.makeText(getApplicationContext(),"긴급 메모에 저장되었습니다",Toast.LENGTH_SHORT).show();
+                    }else{
+                        //메모 조회 실패 시 실패 원인 보여줌
+                        Toast.makeText(getApplicationContext(),json.get("message").toString(),Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         memo_dialog.show();
     }
 }

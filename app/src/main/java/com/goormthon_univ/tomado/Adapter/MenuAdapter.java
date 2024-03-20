@@ -69,6 +69,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
                         Intent intent_friendactivity=new Intent(context, FriendActivity.class);
                         intent_friendactivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent_friendactivity);
+                        //TODO
+                        Toast.makeText(context,"서버와 연결되지 않은 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
                         //

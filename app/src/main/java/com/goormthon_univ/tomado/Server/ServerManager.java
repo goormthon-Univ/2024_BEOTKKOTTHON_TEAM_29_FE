@@ -49,4 +49,17 @@ public class ServerManager {
         String d= ((HttpRequestPutJson) th).getResponse();
         return d;
     }
+
+    public String http_request_delete_json(String page){
+        Thread th = new HttpRequestDeleteJson(url_main+page);
+        th.start();
+
+        try{
+            th.join();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        String d= ((HttpRequestDeleteJson) th).getResponse();
+        return d;
+    }
 }

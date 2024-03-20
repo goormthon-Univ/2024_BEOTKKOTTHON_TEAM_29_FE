@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/dialog_menu_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -83,7 +83,7 @@
             app:srcCompat="@drawable/menu_point_icon" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/dialog_menu_tomato"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="25"
