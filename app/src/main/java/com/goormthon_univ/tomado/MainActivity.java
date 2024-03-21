@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -312,6 +313,17 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager layoutManager=new GridLayoutManager(this,2);
         dialog_category_main_recyclerview.setLayoutManager(layoutManager);
         dialog_category_main_recyclerview.setAdapter(category_adapter);
+
+        //홈화면 카테고리 다이얼로그 뷰 연결
+        ImageButton dialog_category_main_edit=menu_dialog.findViewById(R.id.dialog_category_main_edit);
+
+        //편집 버튼을 눌렀을 경우
+        dialog_category_main_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"카테고리 편집,추가는 모아보기에서 할 수 있습니다",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //서버에서 불러오기
         try {
