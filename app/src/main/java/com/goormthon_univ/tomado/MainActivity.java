@@ -5,8 +5,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -31,6 +34,7 @@ import com.goormthon_univ.tomado.Adapter.Category;
 import com.goormthon_univ.tomado.Adapter.CategoryAdapter;
 import com.goormthon_univ.tomado.Adapter.Memo;
 import com.goormthon_univ.tomado.Adapter.MenuAdapter;
+import com.goormthon_univ.tomado.Manager.PreferencesManager;
 import com.goormthon_univ.tomado.Server.ServerManager;
 import com.goormthon_univ.tomado.Thread.TimerThread;
 
@@ -74,9 +78,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean pomodoro_mode;
 
     ServerManager server_manager;
+    SharedPreferences pf;
 
-    //유저 아이디(임시 설정)
-    int user_id=35;
+    String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
 
         //서버 연동 객체 추가
         server_manager=new ServerManager(getApplicationContext());
+
+        //SharedPreferences
+        pf=getSharedPreferences("preferences", Activity.MODE_PRIVATE);
+        user_id=server_manager.get_user_id(pf);
 
         //메인에 있는 뷰들 연결
         main_time=findViewById(R.id.main_time);
@@ -308,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
         //리사이클러뷰 어뎁터 연결
         RecyclerView dialog_category_main_recyclerview=menu_dialog.findViewById(R.id.dialog_category_main_recyclerview);
 
-        CategoryAdapter category_adapter=new CategoryAdapter(main_category_text,1,MainActivity.this);
+        CategoryAdapter category_adapter=new CategoryAdapter(main_category_text,1,MainActivity.this, PreferencesManager.pref_read_string(pf,"user_id"));
 
         GridLayoutManager layoutManager=new GridLayoutManager(this,2);
         dialog_category_main_recyclerview.setLayoutManager(layoutManager);
@@ -374,7 +382,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject parms=new JSONObject();
                 try {
                     parms.put("content",dialog_memo_content.getText());
-                    JSONObject json=new JSONObject(server_manager.http_request_post_json("/memos/"+user_id,parms));
+                    JSONObject json=new JSONObject(server_manager.http_request_post_json("/memos/"+server_manager.get_user_id((SharedPreferences)getSharedPreferences("preferences", Activity.MODE_PRIVATE)),parms));
 
                     if(json.get("message").toString().equals("메모 작성 성공")){
                         Toast.makeText(getApplicationContext(),"긴급 메모에 저장되었습니다",Toast.LENGTH_SHORT).show();

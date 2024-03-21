@@ -2,7 +2,9 @@ package com.goormthon_univ.tomado;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.goormthon_univ.tomado.Manager.PreferencesManager;
 import com.goormthon_univ.tomado.Server.ServerManager;
 
 import org.json.JSONException;
@@ -53,12 +56,13 @@ public class LoginActivity extends AppCompatActivity {
                     parms.put("password",login_password.getText());
                     JSONObject js=new JSONObject(server_manager.http_request_post_json("/users/login",parms));
                     if(js.get("message").toString().equals("로그인 성공")){
-                        //로그인 성공
-                        startActivity(intent);
-
                         //user_id 가져오기
                         JSONObject data=new JSONObject(js.get("data").toString());
-                        Log.d("d",data.get("user_id").toString());
+                        PreferencesManager.pref_write_string((SharedPreferences)getSharedPreferences("preferences", Activity.MODE_PRIVATE),
+                                "user_id",data.get("user_id").toString());
+
+                        //로그인 성공
+                        startActivity(intent);
                     }else{
                         //로그인 실패 시 실패 원인 보여줌
                         Toast.makeText(getApplicationContext(),js.get("message").toString(),Toast.LENGTH_SHORT).show();

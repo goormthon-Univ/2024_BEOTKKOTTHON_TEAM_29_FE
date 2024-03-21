@@ -30,9 +30,6 @@ public class DictionaryActivity extends AppCompatActivity {
         //서버 연동 객체 추가
         ServerManager server_manager=new ServerManager(getApplicationContext());
 
-        //유저 아이디(임시 설정)
-        int user_id=35;
-
         //최근 얻은 토마두 리사이클러뷰 어뎁터 연결
         RecyclerView dictionary_recent_recyclerview=findViewById(R.id.dictionary_recent_recyclerview);
 
@@ -68,7 +65,7 @@ public class DictionaryActivity extends AppCompatActivity {
         //서버에서 불러오기
         /*
         try {
-            JSONObject json=new JSONObject(server_manager.http_request_get_json("/book/users/"+user_id+"/characters"));
+            JSONObject json=new JSONObject(server_manager.http_request_get_json("/book/users/"+server_manager.user_id+"/characters"));
 
             if(json.get("message").toString().equals("토마 도감 보기 성공")){
                 JSONObject json_data=new JSONObject(json.get("data").toString());

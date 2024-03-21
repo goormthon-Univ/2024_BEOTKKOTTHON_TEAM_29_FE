@@ -60,10 +60,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     Context context;
 
-    public CategoryAdapter(TextView main_category_text,int mode,Context context){
+    String user_id;
+
+    public CategoryAdapter(TextView main_category_text,int mode,Context context,String user_id){
         this.main_category_text=main_category_text;
         this.mode=mode;
         this.context=context;
+
+        this.user_id=user_id;
 
         server_manager=new ServerManager(context);
     }
@@ -229,7 +233,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private void dialog_category_add_fn(){
         JSONObject parms=new JSONObject();
         try {
-            parms.put("user_id",server_manager.user_id);
+            parms.put("user_id",user_id);
             parms.put("title",dialog_category_add_edittext.getText().toString());
             parms.put("color","RED");
             JSONObject json=new JSONObject(server_manager.http_request_post_json("/categories",parms));
@@ -250,7 +254,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private void dialog_category_edit_fn(String category_id,String edit_title){
         JSONObject parms=new JSONObject();
         try {
-            parms.put("user_id",server_manager.user_id);
+            parms.put("user_id",user_id);
             parms.put("title",edit_title);
             parms.put("color","RED");
             JSONObject json=new JSONObject(server_manager.http_request_put_json("/categories/"+category_id,parms));
@@ -271,7 +275,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private void dialog_category_delete_fn(String category_id){
         JSONObject parms=new JSONObject();
         try {
-            JSONObject json=new JSONObject(server_manager.http_request_delete_json("/categories?user="+ServerManager.user_id+"&category="+category_id));
+            JSONObject json=new JSONObject(server_manager.http_request_delete_json("/categories?user="+user_id+"&category="+category_id));
 
             if(json.get("message").toString().equals("카테고리 삭제 성공")){
                 refreshItem();
@@ -315,7 +319,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         //서버에서 불러오기
         try {
-            JSONObject json=new JSONObject(server_manager.http_request_get_json("/categories/"+ServerManager.user_id));
+            JSONObject json=new JSONObject(server_manager.http_request_get_json("/categories/"+user_id));
 
             if(json.get("message").toString().equals("카테고리 조회 성공")){
                 JSONObject json_data=new JSONObject(json.get("data").toString());

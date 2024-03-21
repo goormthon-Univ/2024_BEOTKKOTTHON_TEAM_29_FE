@@ -2,7 +2,9 @@ package com.goormthon_univ.tomado;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.goormthon_univ.tomado.Manager.PreferencesManager;
 import com.goormthon_univ.tomado.Server.ServerManager;
 
 import org.json.JSONException;
@@ -55,8 +58,8 @@ public class RegisterActivity extends AppCompatActivity {
                         JSONObject data=new JSONObject(js.get("data").toString());
                         Toast.makeText(getApplicationContext(),data.get("user_id").toString(),Toast.LENGTH_SHORT).show();
 
-                        Log.d("RegisterActivity",js.get("data").toString());
-                        Log.d("RegisterActivity",data.get("user_id").toString());
+                        PreferencesManager.pref_write_string((SharedPreferences)getSharedPreferences("preferences", Activity.MODE_PRIVATE),
+                                "user_id",data.get("user_id").toString());
                         startActivity(intent);
                     }else{
                         //회원 가입 실패 시 실패 원인 보여줌

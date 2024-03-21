@@ -27,7 +27,9 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder>{
     //서버 관리 객체 추가
     ServerManager server_manager;
 
-    public MemoAdapter(Context context){
+    String user_id;
+
+    public MemoAdapter(Context context,String user_id){
         this.context=context;
 
         server_manager=new ServerManager(context);
@@ -60,7 +62,7 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder>{
             @Override
             public void onClick(View v) {
                 try {
-                    JSONObject json=new JSONObject(server_manager.http_request_delete_json("/memos?user="+ServerManager.user_id+"&memo="+item.id));
+                    JSONObject json=new JSONObject(server_manager.http_request_delete_json("/memos?user="+user_id+"&memo="+item.id));
 
                     if(json.get("message").toString().equals("메모 삭제 성공")){
                         Toast.makeText(context,"메모 삭제에 성공하였습니다",Toast.LENGTH_SHORT).show();
@@ -102,9 +104,6 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder>{
     static class ViewHolder extends RecyclerView.ViewHolder{
         //서버 연동 객체 추가
         ServerManager server_manager;
-
-        //유저 아이디(임시 설정)
-        int user_id=35;
 
         Context context;
 
