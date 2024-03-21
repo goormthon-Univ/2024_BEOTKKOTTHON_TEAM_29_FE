@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.goormthon_univ.tomado.Adapter.DictionaryAdapter;
 import com.goormthon_univ.tomado.Adapter.StoreAdapter;
@@ -37,5 +38,9 @@ public class StoreActivity extends AppCompatActivity {
 
         //서버에서 불러오기
         store_adapter.notifyDataSetChanged();
+    }
+
+    public void onclick_close(View view){
+        finish();
     }
 }
