@@ -50,10 +50,10 @@ public class DashboardActivity extends AppCompatActivity {
         dashboard_category_recyclerview.setLayoutManager(layoutManager);
         dashboard_category_recyclerview.setAdapter(category_adapter);
 
-        Category c_1=new Category("0","프로그래밍 기초","color",5);
-        Category c_2=new Category("0","오픽","color",8);
-        Category c_3=new Category("0","독서","color",0);
-        Category c_4=new Category("0","시험 공부","color",8);
+        Category c_1=new Category("0","프로그래밍 기초","color",5,false);
+        Category c_2=new Category("0","오픽","color",8,false);
+        Category c_3=new Category("0","독서","color",0,false);
+        Category c_4=new Category("0","시험 공부","color",8,false);
 
         category_adapter.addItem(c_1);
         category_adapter.addItem(c_2);
@@ -73,7 +73,8 @@ public class DashboardActivity extends AppCompatActivity {
                     Category category=new Category(data.get("category_id").toString(),
                             data.get("title").toString(),
                             data.get("color").toString(),
-                            Integer.parseInt(data.get("tomato").toString()));
+                            Integer.parseInt(data.get("tomato").toString()),
+                            false);
                     category_adapter.addItem(category);
                 }
             }else{
@@ -83,6 +84,9 @@ public class DashboardActivity extends AppCompatActivity {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
+        Category c_0=new Category("","","",0,true);
+        category_adapter.addItem(c_0);
 
         category_adapter.notifyDataSetChanged();
 

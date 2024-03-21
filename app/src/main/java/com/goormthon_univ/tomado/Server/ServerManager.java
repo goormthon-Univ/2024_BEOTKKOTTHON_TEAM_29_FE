@@ -7,6 +7,9 @@ public class ServerManager {
     static String url_main="http://43.201.79.243:8080";
     Context context;
 
+    //(임시)유저 아이디 설정
+    public static int user_id=35;
+
     public ServerManager(Context context){
         this.context=context;
     }

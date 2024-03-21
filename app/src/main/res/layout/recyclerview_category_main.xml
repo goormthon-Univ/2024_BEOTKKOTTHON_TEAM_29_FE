@@ -30,4 +30,17 @@
         app:layout_constraintStart_toStartOf="@+id/recyclerview_category_layout"
         app:layout_constraintTop_toTopOf="@+id/recyclerview_category_layout" />
 
+    <TextView
+        android:id="@+id/recyclerview_category_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerview_category_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recyclerview_category_layout"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

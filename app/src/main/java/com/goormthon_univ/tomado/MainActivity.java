@@ -313,10 +313,10 @@ public class MainActivity extends AppCompatActivity {
         dialog_category_main_recyclerview.setLayoutManager(layoutManager);
         dialog_category_main_recyclerview.setAdapter(category_adapter);
 
-        Category c_1=new Category("0","프로그래밍 기초","color",5);
-        Category c_2=new Category("0","오픽","color",8);
-        Category c_3=new Category("0","독서","color",0);
-        Category c_4=new Category("0","시험 공부","color",8);
+        Category c_1=new Category("0","프로그래밍 기초","color",5,false);
+        Category c_2=new Category("0","오픽","color",8,false);
+        Category c_3=new Category("0","독서","color",0,false);
+        Category c_4=new Category("0","시험 공부","color",8,false);
 
         //서버에서 불러오기
         try {
@@ -331,7 +331,8 @@ public class MainActivity extends AppCompatActivity {
                     Category category=new Category(data.get("category_id").toString(),
                             data.get("title").toString(),
                             data.get("color").toString(),
-                            Integer.parseInt(data.get("tomato").toString()));
+                            Integer.parseInt(data.get("tomato").toString()),
+                            false);
                     category_adapter.addItem(category);
                 }
             }else{
@@ -346,6 +347,7 @@ public class MainActivity extends AppCompatActivity {
         category_adapter.addItem(c_2);
         category_adapter.addItem(c_3);
         category_adapter.addItem(c_4);
+
         category_adapter.notifyDataSetChanged();
 
         menu_dialog.show();

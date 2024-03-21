@@ -46,7 +46,7 @@ public class HttpRequestPutJson extends Thread{
                 if(conn.getResponseCode()==HttpURLConnection.HTTP_FORBIDDEN){
                     Log.i("HttpRequestPutJson","HTTP_FORBIDDEN");
                 }
-                if(conn.getResponseCode()==HttpURLConnection.HTTP_SERVER_ERROR){
+                if(conn.getResponseCode()==HttpURLConnection.HTTP_BAD_REQUEST||conn.getResponseCode()==HttpURLConnection.HTTP_NOT_FOUND){
                     Log.i("HttpRequestPutJson","HTTP_SERVER_ERROR");
                     BufferedReader br = new BufferedReader(new InputStreamReader(
                             conn.getErrorStream(), "utf-8"
