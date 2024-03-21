@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.goormthon_univ.tomado.MainActivity;
 import com.goormthon_univ.tomado.R;
 import com.goormthon_univ.tomado.Server.ServerManager;
 
@@ -23,8 +24,13 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder>{
     Context context;
     ArrayList<Memo> items=new ArrayList<>();
 
+    //서버 관리 객체 추가
+    ServerManager server_manager;
+
     public MemoAdapter(Context context){
         this.context=context;
+
+        server_manager=new ServerManager(context);
     }
 
     @NonNull
@@ -47,6 +53,29 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder>{
                 notifyDataSetChanged();
             }
         });
+
+        ImageView recyclerview_memo_delete=holder.itemView.findViewById(R.id.recyclerview_memo_delete);
+        //삭제 버튼 클릭하면 삭제
+        recyclerview_memo_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    JSONObject json=new JSONObject(server_manager.http_request_delete_json("/memos?user="+ServerManager.user_id+"&memo="+item.id));
+
+                    if(json.get("message").toString().equals("메모 삭제 성공")){
+                        Toast.makeText(context,"메모 삭제에 성공하였습니다",Toast.LENGTH_SHORT).show();
+
+                        deleteItem(item);
+                    }else{
+                        //메모 조회 실패 시 실패 원인 보여줌
+                        Toast.makeText(context,json.get("message").toString(),Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     @Override
@@ -56,6 +85,18 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder>{
 
     public void addItem(Memo item){
         items.add(item);
+    }
+
+    public void deleteItem(Memo item){
+        //아이템의 위치 찾기
+        int position=items.indexOf(item);
+
+        //아이템 삭제
+        items.remove(position);
+
+        //어뎁터에 삭제했음을 알리기
+        notifyItemRemoved(position);
+        notifyItemRangeRemoved(position, items.size());
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
@@ -69,14 +110,12 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder>{
 
         TextView recyclerview_memo_content;
         TextView recyclerview_memo_date;
-        ImageView recyclerview_memo_delete;
 
-        public ViewHolder(@NonNull View itemView,Context context) {
+        public ViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
 
             recyclerview_memo_content=itemView.findViewById(R.id.recyclerview_memo_content);
             recyclerview_memo_date=itemView.findViewById(R.id.recyclerview_memo_date);
-            recyclerview_memo_delete=itemView.findViewById(R.id.recyclerview_memo_delete);
 
             server_manager=new ServerManager(context);
             this.context=context;
@@ -85,26 +124,6 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder>{
         public void setItem(Memo item){
             recyclerview_memo_content.setText(item.content);
             recyclerview_memo_date.setText(item.created_at);
-
-            //삭제 버튼 클릭하면 삭제
-            recyclerview_memo_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        JSONObject json=new JSONObject(server_manager.http_request_delete_json("/memos?user="+user_id+"&memo="+item.id));
-
-                        if(json.get("message").toString().equals("메모 삭제 성공")){
-                            Toast.makeText(context,"메모 삭제에 성공하였습니다",Toast.LENGTH_SHORT).show();
-                        }else{
-                            //메모 조회 실패 시 실패 원인 보여줌
-                            Toast.makeText(context,json.get("message").toString(),Toast.LENGTH_SHORT).show();
-                        }
-
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
         }
     }
 }

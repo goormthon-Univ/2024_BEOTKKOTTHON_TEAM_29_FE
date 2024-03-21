@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         //리사이클러뷰 어뎁터 연결
         RecyclerView dialog_category_main_recyclerview=menu_dialog.findViewById(R.id.dialog_category_main_recyclerview);
 
-        CategoryAdapter category_adapter=new CategoryAdapter(main_category_text,1);
+        CategoryAdapter category_adapter=new CategoryAdapter(main_category_text,1,MainActivity.this);
 
         GridLayoutManager layoutManager=new GridLayoutManager(this,2);
         dialog_category_main_recyclerview.setLayoutManager(layoutManager);
