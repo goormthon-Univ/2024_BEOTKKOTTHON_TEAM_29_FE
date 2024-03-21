@@ -50,16 +50,6 @@ public class DashboardActivity extends AppCompatActivity {
         dashboard_category_recyclerview.setLayoutManager(layoutManager);
         dashboard_category_recyclerview.setAdapter(category_adapter);
 
-        Category c_1=new Category("0","프로그래밍 기초","color",5,false);
-        Category c_2=new Category("0","오픽","color",8,false);
-        Category c_3=new Category("0","독서","color",0,false);
-        Category c_4=new Category("0","시험 공부","color",8,false);
-
-        category_adapter.addItem(c_1);
-        category_adapter.addItem(c_2);
-        category_adapter.addItem(c_3);
-        category_adapter.addItem(c_4);
-
         //서버에서 불러오기
         try {
             JSONObject json=new JSONObject(server_manager.http_request_get_json("/categories/"+user_id));
