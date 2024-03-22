@@ -19,5 +19,5 @@
     <color name="category_yellow">#FFF2B1</color>
     <color name="category_yellow_text">#FFA800</color>
     <color name="category_blue">#E5F7FF</color>
-    <color name="category_blue_text">@color/white</color>
+    <color name="category_blue_text">#5C739C</color>
 </resources>
