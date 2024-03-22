@@ -40,7 +40,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     ServerManager server_manager;
 
     //리사이클러뷰 뷰
-    LinearLayout recyclerview_category_layout;
+    ConstraintLayout recyclerview_category_layout;
     TextView recyclerview_category_title;
     TextView recyclerview_category_tomato;
     TextView recyclerview_category_add;
@@ -504,7 +504,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         //리사이클러뷰 뷰
-        LinearLayout recyclerview_category_layout;
+        ConstraintLayout recyclerview_category_layout;
         TextView recyclerview_category_title;
         TextView recyclerview_category_tomato;
         TextView recyclerview_category_add;
