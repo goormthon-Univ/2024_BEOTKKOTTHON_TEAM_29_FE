@@ -31,6 +31,7 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder>{
 
     public MemoAdapter(Context context,String user_id){
         this.context=context;
+        this.user_id=user_id;
 
         server_manager=new ServerManager(context);
     }
