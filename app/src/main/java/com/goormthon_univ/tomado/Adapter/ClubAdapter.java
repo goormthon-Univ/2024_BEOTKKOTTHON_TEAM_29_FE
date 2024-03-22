@@ -69,7 +69,7 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ViewHolder>{
             recyclerview_club_title.setText(item.title);
             recyclerview_club_date.setText(item.start_date+" - "+item.end_date);
             recyclerview_club_memo.setText(item.memo);
-            recyclerview_club_progress.setProgress((int)((double)item.current_amount/item.goal*100));
+            recyclerview_club_progress.setProgress(Integer.parseInt(String.valueOf((int)(Double.parseDouble(item.current_amount)/Double.parseDouble(item.goal)*100))));
             recyclerview_club_progress_text.setText(item.current_amount+" / "+item.goal);
         }
     }
