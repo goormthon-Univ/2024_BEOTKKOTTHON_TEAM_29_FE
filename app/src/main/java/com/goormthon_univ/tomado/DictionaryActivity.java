@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -21,6 +23,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DictionaryActivity extends AppCompatActivity {
+    SharedPreferences pf;
+
+    String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,10 @@ public class DictionaryActivity extends AppCompatActivity {
 
         //서버 연동 객체 추가
         ServerManager server_manager=new ServerManager(getApplicationContext());
+
+        //SharedPreferences
+        pf=getSharedPreferences("preferences", Activity.MODE_PRIVATE);
+        user_id=server_manager.get_user_id(pf);
 
         //최근 얻은 토마두 리사이클러뷰 어뎁터 연결
         RecyclerView dictionary_recent_recyclerview=findViewById(R.id.dictionary_recent_recyclerview);
@@ -39,12 +48,6 @@ public class DictionaryActivity extends AppCompatActivity {
         dictionary_recent_recyclerview.setLayoutManager(layoutManager);
         dictionary_recent_recyclerview.setAdapter(dictionary_adapter);
 
-        Dictionary d_1=new Dictionary("열공모드 토마두","");
-
-        dictionary_adapter.addItem(d_1);
-        dictionary_adapter.addItem(d_1);
-        dictionary_adapter.addItem(d_1);
-
         //나의 토마두 리사이클러뷰 어뎁터 연결
         RecyclerView dictionary_my_recyclerview=findViewById(R.id.dictionary_my_recyclerview);
 
@@ -54,25 +57,15 @@ public class DictionaryActivity extends AppCompatActivity {
         dictionary_my_recyclerview.setLayoutManager(layoutManager_my);
         dictionary_my_recyclerview.setAdapter(dictionary_my_adapter);
 
-        dictionary_my_adapter.addItem(d_1);
-        dictionary_my_adapter.addItem(d_1);
-        dictionary_my_adapter.addItem(d_1);
-        dictionary_my_adapter.addItem(d_1);
-        dictionary_my_adapter.addItem(d_1);
-        dictionary_my_adapter.addItem(d_1);
-        dictionary_my_adapter.addItem(d_1);
-
         //서버에서 불러오기
-        /*
         try {
-            JSONObject json=new JSONObject(server_manager.http_request_get_json("/book/users/"+server_manager.user_id+"/characters"));
+            JSONObject json=new JSONObject(server_manager.http_request_get_json("/book/users/"+user_id+"/tomados"));
 
             if(json.get("message").toString().equals("토마 도감 보기 성공")){
-                JSONObject json_data=new JSONObject(json.get("data").toString());
-                JSONArray category_list_array=new JSONArray(json_data.get("tomadoList").toString());
+                JSONArray tomado_list_array=new JSONArray(json.get("data").toString());
 
-                for(int i=0;i< category_list_array.length();i++){
-                    JSONObject data=new JSONObject(category_list_array.get(i).toString());
+                for(int i=0;i< tomado_list_array.length();i++){
+                    JSONObject data=new JSONObject(tomado_list_array.get(i).toString());
                     Dictionary dictionary=new Dictionary(data.get("name").toString(),
                             data.get("url").toString()
                     );
@@ -85,7 +78,7 @@ public class DictionaryActivity extends AppCompatActivity {
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
-        }*/
+        }
 
         dictionary_adapter.notifyDataSetChanged();
         dictionary_my_adapter.notifyDataSetChanged();

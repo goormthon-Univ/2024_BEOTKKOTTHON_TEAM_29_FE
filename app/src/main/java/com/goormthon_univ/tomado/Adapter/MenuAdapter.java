@@ -78,8 +78,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
                         Intent intent_dictionaryactivity=new Intent(context, DictionaryActivity.class);
                         intent_dictionaryactivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent_dictionaryactivity);
-                        //TODO
-                        Toast.makeText(context,"토마보감: 서버와 연결되지 않은 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
                         Intent intent_storeactivity=new Intent(context, StoreActivity.class);
