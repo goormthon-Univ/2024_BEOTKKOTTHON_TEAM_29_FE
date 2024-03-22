@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView main_breaktime_arrow;
     Switch main_mode_switch;
     TextView main_category_text;
+    ImageView main_category_image;
 
     //Handler 객체 생성
     Handler handler=new Handler();
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         main_mode_switch=findViewById(R.id.main_mode_switch);
         main_breaktime_arrow=findViewById(R.id.main_breaktime_arrow);
         main_category_text=findViewById(R.id.main_category_text);
+        main_category_image=findViewById(R.id.main_category_image);
 
         //리사이클러뷰 어뎁터 연결
         RecyclerView main_breaktime_recyclerview=findViewById(R.id.main_breaktime_recyclerview);
@@ -316,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
         //리사이클러뷰 어뎁터 연결
         RecyclerView dialog_category_main_recyclerview=menu_dialog.findViewById(R.id.dialog_category_main_recyclerview);
 
-        CategoryAdapter category_adapter=new CategoryAdapter(main_category_text,1,MainActivity.this, PreferencesManager.pref_read_string(pf,"user_id"));
+        CategoryAdapter category_adapter=new CategoryAdapter(main_category_text,main_category_image,1,MainActivity.this, PreferencesManager.pref_read_string(pf,"user_id"));
 
         GridLayoutManager layoutManager=new GridLayoutManager(this,2);
         dialog_category_main_recyclerview.setLayoutManager(layoutManager);

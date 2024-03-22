@@ -51,11 +51,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/main_category_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="109dp"
         android:onClick="onclick_category_dialog"
+        android:tint="@color/category_orange"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -65,11 +66,12 @@
         android:id="@+id/main_category_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="프로그래밍 기초"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintEnd_toEndOf="@+id/imageView4"
-        app:layout_constraintStart_toStartOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+        android:text="선택해주세요"
+        android:textColor="@color/category_orange_text"
+        app:layout_constraintBottom_toBottomOf="@+id/main_category_image"
+        app:layout_constraintEnd_toEndOf="@+id/main_category_image"
+        app:layout_constraintStart_toStartOf="@+id/main_category_image"
+        app:layout_constraintTop_toTopOf="@+id/main_category_image" />
 
     <ImageView
         android:id="@+id/main_gradient"

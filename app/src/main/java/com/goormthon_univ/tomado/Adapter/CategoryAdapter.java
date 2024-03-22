@@ -58,6 +58,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     private int selectedItemPosition=0;
     TextView main_category_text;
+    ImageView main_category_image;
     ArrayList<Category> items=new ArrayList<>();
 
     /*
@@ -70,8 +71,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     String user_id;
 
-    public CategoryAdapter(TextView main_category_text,int mode,Context context,String user_id){
+    public CategoryAdapter(TextView main_category_text,ImageView main_category_image,int mode,Context context,String user_id){
         this.main_category_text=main_category_text;
+        this.main_category_image=main_category_image;
         this.mode=mode;
         this.context=context;
 
@@ -99,16 +101,29 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         Category item=items.get(position);
         holder.setItem(item);
 
-        /*
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectedItemPosition=position;
-                //notifyDataSetChanged();
+                notifyDataSetChanged();
             }
-        });*/
+        });
 
         if(selectedItemPosition==position && mode==1){
+            if(item.color.equals("RED")){
+                main_category_image.setColorFilter(context.getColor(R.color.category_orange));
+                main_category_text.setTextColor(context.getColor(R.color.category_orange_text));
+            }else if(item.color.equals("GRAY")){
+                main_category_image.setColorFilter(context.getColor(R.color.category_gray));
+                main_category_text.setTextColor(context.getColor(R.color.category_gray_text));
+            }else if(item.color.equals("GREEN")){
+                main_category_image.setColorFilter(context.getColor(R.color.category_green));
+                main_category_text.setTextColor(context.getColor(R.color.category_green_text));
+            }else if(item.color.equals("YELLOW")){
+                main_category_image.setColorFilter(context.getColor(R.color.category_yellow));
+                main_category_text.setTextColor(context.getColor(R.color.category_yellow_text));
+            }
+
             main_category_text.setText(item.title);
         }
 

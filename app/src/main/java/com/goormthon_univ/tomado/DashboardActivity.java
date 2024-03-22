@@ -44,7 +44,7 @@ public class DashboardActivity extends AppCompatActivity {
         //리사이클러뷰 어뎁터 연결
         dashboard_category_recyclerview=findViewById(R.id.dashboard_category_recyclerview);
 
-        CategoryAdapter category_adapter=new CategoryAdapter(null,2,DashboardActivity.this, PreferencesManager.pref_read_string((SharedPreferences)getSharedPreferences("preferences", Activity.MODE_PRIVATE),"user_id"));
+        CategoryAdapter category_adapter=new CategoryAdapter(null,null,2,DashboardActivity.this, PreferencesManager.pref_read_string((SharedPreferences)getSharedPreferences("preferences", Activity.MODE_PRIVATE),"user_id"));
 
         GridLayoutManager layoutManager=new GridLayoutManager(this,2);
         dashboard_category_recyclerview.setLayoutManager(layoutManager);
