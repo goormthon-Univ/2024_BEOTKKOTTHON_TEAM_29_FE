@@ -85,8 +85,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
                         Intent intent_storeactivity=new Intent(context, StoreActivity.class);
                         intent_storeactivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent_storeactivity);
-                        //TODO
-                        Toast.makeText(context,"토마상점: 서버와 연결되지 않은 기능입니다",Toast.LENGTH_SHORT).show();
                         break;
                     case 4:
                         Intent intent_memoactivity=new Intent(context, MemoActivity.class);

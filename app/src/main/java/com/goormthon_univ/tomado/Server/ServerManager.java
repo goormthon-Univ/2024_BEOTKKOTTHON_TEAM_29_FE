@@ -3,6 +3,7 @@ package com.goormthon_univ.tomado.Server;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,6 +43,19 @@ public class ServerManager extends AppCompatActivity {
             e.printStackTrace();
         }
         String d= ((HttpRequestPostJson) th).getResponse();
+        return d;
+    }
+
+    public Bitmap http_request_get_image(String page){
+        Thread th = new HttpRequestGetBitmap(page);
+        th.start();
+
+        try{
+            th.join();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        Bitmap d= ((HttpRequestGetBitmap) th).getResponse();
         return d;
     }
 

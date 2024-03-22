@@ -1,8 +1,11 @@
 package com.goormthon_univ.tomado.Adapter;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.goormthon_univ.tomado.MainActivity;
 import com.goormthon_univ.tomado.R;
+import com.goormthon_univ.tomado.Server.ServerManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -58,21 +66,29 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder>{
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
+        //서버 관리 객체 추가
+        ServerManager server_manager;
+
         LinearLayout recyclerview_store_layout;
         TextView recyclerview_store_tomato;
         TextView recyclerview_store_name;
+        ImageView recyclerview_store_image;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            server_manager=new ServerManager(itemView.getContext());
+
             recyclerview_store_layout=itemView.findViewById(R.id.recyclerview_store_layout);
             recyclerview_store_tomato=itemView.findViewById(R.id.recyclerview_store_tomato);
             recyclerview_store_name=itemView.findViewById(R.id.recyclerview_store_name);
+            recyclerview_store_image=itemView.findViewById(R.id.recyclerview_store_image);
         }
 
         public void setItem(Tomado item){
             recyclerview_store_tomato.setText(item.tomato);
             recyclerview_store_name.setText(item.name);
+            recyclerview_store_image.setImageBitmap(server_manager.http_request_get_image(item.url));
 
             Dialog store_dialog=new Dialog(itemView.getContext());
             store_dialog.setContentView(R.layout.dialog_store);
@@ -96,12 +112,30 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder>{
             dialog_store_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(itemView.getContext(),"구매",Toast.LENGTH_SHORT).show();
+                    try {
+                        JSONObject parms=new JSONObject();
+                        JSONObject json=new JSONObject(server_manager.http_request_post_json("/shop?user="+server_manager.get_user_id(itemView.getContext().getSharedPreferences("preferences", Activity.MODE_PRIVATE))+"&tomado="+ item.tomado_id,
+                                parms));
+
+                        if(json.get("message").toString().equals("캐릭터 구입 성공")){
+                            //다이얼로그 닫기
+                            store_dialog.hide();
+
+                            //구입 성공 메시지 띄우기
+                            Toast.makeText(itemView.getContext(), "캐릭터 구입에 성공하였습니다",Toast.LENGTH_SHORT).show();
+                        }else{
+                            //다이얼로그 닫기
+                            store_dialog.hide();
+
+                            //구입 실패 시 실패 원인 보여줌
+                            Toast.makeText(itemView.getContext(), json.get("message").toString(),Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             });
-            //TODO 이미지 연결 필요
-
-
+            dialog_store_image.setImageBitmap(server_manager.http_request_get_image(item.url));
 
             recyclerview_store_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
