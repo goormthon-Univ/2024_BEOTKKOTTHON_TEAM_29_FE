@@ -113,9 +113,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             if(item.color.equals("RED")){
                 main_category_image.setColorFilter(context.getColor(R.color.category_orange));
                 main_category_text.setTextColor(context.getColor(R.color.category_orange_text));
-            }else if(item.color.equals("GRAY")){
-                main_category_image.setColorFilter(context.getColor(R.color.category_gray));
-                main_category_text.setTextColor(context.getColor(R.color.category_gray_text));
+            }else if(item.color.equals("BLUE")){
+                main_category_image.setColorFilter(context.getColor(R.color.category_blue));
+                main_category_text.setTextColor(context.getColor(R.color.category_blue_text));
             }else if(item.color.equals("GREEN")){
                 main_category_image.setColorFilter(context.getColor(R.color.category_green));
                 main_category_text.setTextColor(context.getColor(R.color.category_green_text));
@@ -125,6 +125,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             }
 
             main_category_text.setText(item.title);
+            MainActivity.category_id= item.category_id;
         }
 
         //뷰들

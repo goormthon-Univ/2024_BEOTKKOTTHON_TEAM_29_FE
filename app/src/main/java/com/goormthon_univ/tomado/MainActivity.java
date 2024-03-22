@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -46,6 +47,8 @@ import org.json.JSONObject;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import kotlin.jvm.Synchronized;
+
 public class MainActivity extends AppCompatActivity {
     //메인 화면에 있는 뷰들
     TextView main_time;
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView main_category_image;
 
     //Handler 객체 생성
-    Handler handler=new Handler();
+    MainHandler handler=new MainHandler();
 
     //스레드 생성
     TimerThread timer_th;
@@ -83,6 +86,12 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences pf;
 
     String user_id;
+
+    //카테고리 아이디
+    public static String category_id;
+
+    //모드 (이지모드 0, 하드모드 1)
+    public static String mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,15 +140,18 @@ public class MainActivity extends AppCompatActivity {
 
         //스위치 리스너 설정
         pomodoro_mode=false;
+        mode="0";
         main_mode_switch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(pomodoro_mode){
                     main_mode_text.setText("easy pomodoro");
                     main_breaktime_arrow.setVisibility(View.VISIBLE);
+                    mode="0";
                 }else{
                     main_mode_text.setText("hard pomodoro");
                     main_breaktime_arrow.setVisibility(View.GONE);
+                    mode="1";
                 }
                 pomodoro_mode=!pomodoro_mode;
             }
@@ -187,7 +199,39 @@ public class MainActivity extends AppCompatActivity {
         main_gradient.setVisibility(View.GONE);
     }
 
-    public void timer_start(View view){
+    public class MainHandler extends Handler{
+        @Override
+        public void handleMessage(Message msg){
+            Log.d("",msg.getData().getString("state"));
+            if(msg.getData().getString("state").equals("start")){
+                timer_isrunning=true;
+                main_play_button.setImageResource(R.drawable.pause_button);
+
+                //숨겨야할 뷰 숨기기
+                main_menu_button.setVisibility(View.GONE);
+                main_mode_layout.setVisibility(View.GONE);
+                main_breaktime_layout.setVisibility(View.GONE);
+                main_memo_layout.setVisibility(View.VISIBLE);
+            }else if(msg.getData().getString("state").equals("stop")){
+                timer_isrunning=false;
+                main_play_button.setImageResource(R.drawable.play_button);
+
+                //숨겨야할 뷰 숨기기
+                main_menu_button.setVisibility(View.VISIBLE);
+                main_mode_layout.setVisibility(View.VISIBLE);
+                main_breaktime_layout.setVisibility(View.VISIBLE);
+                main_memo_layout.setVisibility(View.GONE);
+
+                //시계 초기화
+                main_time.setText(String.format("%d : %02d",25,00));
+
+                //프로그래스바 초기화
+                main_progressbar.setProgress(0);
+            }
+        }
+    };
+
+    public void timer_start(View view) throws InterruptedException {
         //현재 타이머가 작동 중인지 여부 체크
         if(timer_isrunning){
             if(timer_th.timer_pause){
@@ -211,22 +255,36 @@ public class MainActivity extends AppCompatActivity {
                 timer_pause();
             }
         }else{
-            //새로운 시작인 경우
-            //기존에 존재하는 스레드가 있는지 우선 체크
-            if(timer_th!=null){
-                timer_th.interrupt();
+            if(category_id!=null){
+                //새로운 시작인 경우
+                //기존에 존재하는 스레드가 있는지 우선 체크
+                if(timer_th!=null){
+                    timer_th.interrupt();
+                }
+
+                int break_time;
+                if(pomodoro_mode){
+                    //하드 뽀모도로 모드인 경우
+                    break_time=5;
+                }else{
+                    break_time=20;
+                }
+                timer_th=new TimerThread(main_time,main_progressbar,handler,0,10,break_time,user_id);
+                timer_th.create_task(findViewById(R.id.main_task).toString());
+                timer_th.start();
+
+                timer_isrunning=true;
+                main_play_button.setImageResource(R.drawable.pause_button);
+
+                //숨겨야할 뷰 숨기기
+                main_menu_button.setVisibility(View.GONE);
+                main_mode_layout.setVisibility(View.GONE);
+                main_breaktime_layout.setVisibility(View.GONE);
+                main_memo_layout.setVisibility(View.VISIBLE);
+            }else{
+                Toast.makeText(getApplicationContext(),"카테고리를 선택 후 시작해주세요",Toast.LENGTH_SHORT).show();
             }
-            timer_th=new TimerThread(main_time,main_progressbar,handler,25,00);
-            timer_th.start();
 
-            timer_isrunning=true;
-            main_play_button.setImageResource(R.drawable.pause_button);
-
-            //숨겨야할 뷰 숨기기
-            main_menu_button.setVisibility(View.GONE);
-            main_mode_layout.setVisibility(View.GONE);
-            main_breaktime_layout.setVisibility(View.GONE);
-            main_memo_layout.setVisibility(View.VISIBLE);
         }
     }
 
