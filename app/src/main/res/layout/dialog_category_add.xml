@@ -59,31 +59,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imageView22"
+        <ImageButton
+            android:id="@+id/dialog_category_orange"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:srcCompat="@drawable/rect_radius_low" />
+            android:background="@drawable/rect_radius_low"
+            android:backgroundTint="@color/category_orange" />
 
-        <ImageView
-            android:id="@+id/imageView23"
+        <ImageButton
+            android:id="@+id/dialog_category_blue"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
-            app:srcCompat="@drawable/rect_radius_low" />
+            android:background="@drawable/rect_radius_low"
+            android:backgroundTint="@color/category_blue" />
 
-        <ImageView
-            android:id="@+id/imageView24"
+        <ImageButton
+            android:id="@+id/dialog_category_green"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
-            app:srcCompat="@drawable/rect_radius_low" />
+            android:background="@drawable/rect_radius_low"
+            android:backgroundTint="@color/category_green" />
 
-        <ImageView
-            android:id="@+id/imageView26"
+        <ImageButton
+            android:id="@+id/dialog_category_yellow"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
-            app:srcCompat="@drawable/rect_radius_low" />
+            android:background="@drawable/rect_radius_low"
+            android:backgroundTint="@color/category_yellow" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

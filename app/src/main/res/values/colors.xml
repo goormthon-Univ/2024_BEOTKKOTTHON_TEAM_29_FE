@@ -8,4 +8,16 @@
     <color name="red">#FF452C</color>
     <color name="gray">#F2F3F5</color>
     <color name="purple">#353954</color>
+
+    <!-- 카테고리 색상-->
+    <color name="category_orange">#FFE4D9</color>
+    <color name="category_orange_text">#FD6B56</color>
+    <color name="category_gray">#F2F3F5</color>
+    <color name="category_gray_text">#84888F</color>
+    <color name="category_green">#D9FCD1</color>
+    <color name="category_green_text">#6CC875</color>
+    <color name="category_yellow">#FFF2B1</color>
+    <color name="category_yellow_text">#FFA800</color>
+    <color name="category_blue">#E5F7FF</color>
+    <color name="category_blue_text">@color/white</color>
 </resources>

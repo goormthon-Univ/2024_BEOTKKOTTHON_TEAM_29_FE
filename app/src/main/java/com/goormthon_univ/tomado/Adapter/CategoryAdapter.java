@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.goormthon_univ.tomado.MainActivity;
@@ -47,6 +49,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     TextView dialog_category_add_text;
     EditText dialog_category_add_edittext;
     ImageButton dialog_category_add_delete;
+    ConstraintLayout dialog_category_add_layout;
+
+    ImageButton dialog_category_orange;
+    ImageButton dialog_category_blue;
+    ImageButton dialog_category_green;
+    ImageButton dialog_category_yellow;
 
     private int selectedItemPosition=0;
     TextView main_category_text;
@@ -127,7 +135,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     @Override
                     public void onClick(View v) {
                         //다이얼로그 표시
-                        dialog_category_add(true,item.title,item.category_id);
+                        dialog_category_add(true,item.title,item.category_id,item.color);
                     }
                 });
             }else{
@@ -141,23 +149,69 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     @Override
                     public void onClick(View v) {
                         //다이얼로그 표시
-                        dialog_category_add(false,item.title,item.category_id);
+                        dialog_category_add(false,item.title,item.category_id,item.color);
                     }
                 });
+
             }
         }
     }
 
-    private void dialog_category_add(boolean add_button,String title,String category_id){
+    private void dialog_category_add(boolean add_button,String title,String category_id,String color){
         Dialog dialog_category_add=new Dialog(context);
         dialog_category_add.setContentView(R.layout.dialog_category_add);
         dialog_category_add.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog_category_add.getWindow().setGravity(Gravity.BOTTOM);
 
         //다이얼로그 뷰 연결
+        dialog_category_add_layout=dialog_category_add.findViewById(R.id.dialog_category_add_layout);
         dialog_category_add_text=dialog_category_add.findViewById(R.id.dialog_category_add_text);
         dialog_category_add_edittext=dialog_category_add.findViewById(R.id.dialog_category_add_edittext);
         dialog_category_add_delete=dialog_category_add.findViewById(R.id.dialog_category_add_delete);
+
+        dialog_category_orange=dialog_category_add.findViewById(R.id.dialog_category_orange);
+        dialog_category_blue=dialog_category_add.findViewById(R.id.dialog_category_blue);
+        dialog_category_green=dialog_category_add.findViewById(R.id.dialog_category_green);
+        dialog_category_yellow=dialog_category_add.findViewById(R.id.dialog_category_yellow);
+
+        /*
+        색상 설정
+         */
+        if(add_button){
+            //추가 버튼인 경우 빨간색이 기본값
+            dialog_color_change_fn("RED");
+        }else{
+            //편집 버튼인 경우
+            dialog_color_change_fn(color);
+        }
+
+
+        //색상 선택 리스너
+        dialog_category_orange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_color_change_fn("RED");
+            }
+        });
+        dialog_category_blue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_color_change_fn("BLUE");
+            }
+        });
+        dialog_category_green.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_color_change_fn("GREEN");
+            }
+        });
+        dialog_category_yellow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_color_change_fn("YELLOW");
+            }
+        });
+
 
         //추가 버튼이 아닌 경우 텍스트 불러오기
         if(!add_button){
@@ -230,12 +284,84 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         dialog_category_add.show();
     }
 
+    private void dialog_color_change_fn(String color){
+        if(color.equals("RED")){
+            //배경 색상 설정
+            Drawable drawable=context.getResources().getDrawable(R.drawable.rect_radius_top);
+            drawable.setTint(context.getColor(R.color.category_orange));
+            dialog_category_add_layout.setBackgroundDrawable(drawable);
+            dialog_category_add_text.setTextColor(context.getColor(R.color.category_orange_text));
+            dialog_category_add_edittext.setTextColor(context.getColor(R.color.category_orange_text));
+
+            //삭제 이미지 색상 설정
+            Drawable drawable_del=context.getResources().getDrawable(R.drawable.delete);
+            drawable_del.setTint(context.getColor(R.color.category_orange_text));
+            dialog_category_add_delete.setBackgroundDrawable(drawable_del);
+
+            //color 설정
+            color="RED";
+        }else if(color.equals("BLUE")){
+            //배경 색상 설정
+            Drawable drawable=context.getResources().getDrawable(R.drawable.rect_radius_top);
+            drawable.setTint(context.getColor(R.color.category_blue));
+            dialog_category_add_layout.setBackgroundDrawable(drawable);
+            dialog_category_add_text.setTextColor(context.getColor(R.color.category_blue_text));
+            dialog_category_add_edittext.setTextColor(context.getColor(R.color.category_blue_text));
+
+            //삭제 이미지 색상 설정
+            Drawable drawable_del=context.getResources().getDrawable(R.drawable.delete);
+            drawable_del.setTint(context.getColor(R.color.category_blue_text));
+            dialog_category_add_delete.setBackgroundDrawable(drawable_del);
+            color="BLUE";
+        }else if(color.equals("GREEN")){
+            //배경 색상 설정
+            Drawable drawable=context.getResources().getDrawable(R.drawable.rect_radius_top);
+            drawable.setTint(context.getColor(R.color.category_green));
+            dialog_category_add_layout.setBackgroundDrawable(drawable);
+            dialog_category_add_text.setTextColor(context.getColor(R.color.category_green_text));
+            dialog_category_add_edittext.setTextColor(context.getColor(R.color.category_green_text));
+
+            //삭제 이미지 색상 설정
+            Drawable drawable_del=context.getResources().getDrawable(R.drawable.delete);
+            drawable_del.setTint(context.getColor(R.color.category_green_text));
+            dialog_category_add_delete.setBackgroundDrawable(drawable_del);
+            color="GREEN";
+        }else if(color.equals("YELLOW")){
+            //배경 색상 설정
+            Drawable drawable=context.getResources().getDrawable(R.drawable.rect_radius_top);
+            drawable.setTint(context.getColor(R.color.category_yellow));
+            dialog_category_add_layout.setBackgroundDrawable(drawable);
+            dialog_category_add_text.setTextColor(context.getColor(R.color.category_yellow_text));
+            dialog_category_add_edittext.setTextColor(context.getColor(R.color.category_yellow_text));
+
+            //삭제 이미지 색상 설정
+            Drawable drawable_del=context.getResources().getDrawable(R.drawable.delete);
+            drawable_del.setTint(context.getColor(R.color.category_yellow_text));
+            dialog_category_add_delete.setBackgroundDrawable(drawable_del);
+            color="YELLOW";
+        }
+    }
+
     private void dialog_category_add_fn(){
+        String color;
+
+        if(dialog_category_add_text.getCurrentTextColor()==context.getColor(R.color.category_orange_text)){
+            color="RED";
+        }else if(dialog_category_add_text.getCurrentTextColor()==context.getColor(R.color.category_blue_text)){
+            color="BLUE";
+        } else if(dialog_category_add_text.getCurrentTextColor()==context.getColor(R.color.category_green_text)){
+            color="GREEN";
+        } else if(dialog_category_add_text.getCurrentTextColor()==context.getColor(R.color.category_yellow_text)){
+            color="YELLOW";
+        }else{
+            color="GREEN"; //기본값
+        }
+
         JSONObject parms=new JSONObject();
         try {
             parms.put("user_id",user_id);
             parms.put("title",dialog_category_add_edittext.getText().toString());
-            parms.put("color","RED");
+            parms.put("color",color);
             JSONObject json=new JSONObject(server_manager.http_request_post_json("/categories",parms));
 
             if(json.get("message").toString().equals("카테고리 생성 성공")){
@@ -252,11 +378,24 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     private void dialog_category_edit_fn(String category_id,String edit_title){
+        String color;
+        if(dialog_category_add_text.getCurrentTextColor()==context.getColor(R.color.category_orange_text)){
+            color="RED";
+        }else if(dialog_category_add_text.getCurrentTextColor()==context.getColor(R.color.category_blue_text)){
+            color="BLUE";
+        } else if(dialog_category_add_text.getCurrentTextColor()==context.getColor(R.color.category_green_text)){
+            color="GREEN";
+        } else if(dialog_category_add_text.getCurrentTextColor()==context.getColor(R.color.category_yellow_text)){
+            color="YELLOW";
+        }else{
+            color="GREEN"; //기본값
+        }
+
         JSONObject parms=new JSONObject();
         try {
             parms.put("user_id",user_id);
             parms.put("title",edit_title);
-            parms.put("color","RED");
+            parms.put("color",color);
             JSONObject json=new JSONObject(server_manager.http_request_put_json("/categories/"+category_id,parms));
 
             if(json.get("message").toString().equals("카테고리 수정 성공")){
@@ -348,11 +487,62 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
+        //리사이클러뷰 뷰
+        LinearLayout recyclerview_category_layout;
+        TextView recyclerview_category_title;
+        TextView recyclerview_category_tomato;
+        TextView recyclerview_category_add;
+
+        int mode;
+
         public ViewHolder(@NonNull View itemView, int mode) {
             super(itemView);
+
+            //뷰들
+            recyclerview_category_layout=itemView.findViewById(R.id.recyclerview_category_layout);
+            recyclerview_category_title=itemView.findViewById(R.id.recyclerview_category_title);
+            recyclerview_category_tomato=itemView.findViewById(R.id.recyclerview_category_tomato);
+            recyclerview_category_add=itemView.findViewById(R.id.recyclerview_category_add);
+
+            //모드
+            this.mode=mode;
         }
 
         public void setItem(Category item){
+            recyclerview_category_title.setText(item.color);
+            //색상 적용
+            if(item.color.equals("RED")){
+                Drawable drawable=itemView.getContext().getResources().getDrawable(R.drawable.rect_radius_low);
+                drawable.setTint(itemView.getContext().getColor(R.color.category_orange));
+                recyclerview_category_layout.setBackgroundDrawable(drawable);
+                recyclerview_category_title.setTextColor(itemView.getContext().getColor(R.color.category_orange_text));
+                if(mode!=1)  recyclerview_category_tomato.setTextColor(itemView.getContext().getColor(R.color.category_orange_text));
+            }else if(item.color.equals("BLUE")){
+                Drawable drawable=itemView.getContext().getResources().getDrawable(R.drawable.rect_radius_low);
+                drawable.setTint(itemView.getContext().getColor(R.color.category_blue));
+                recyclerview_category_layout.setBackgroundDrawable(drawable);
+                recyclerview_category_title.setTextColor(itemView.getContext().getColor(R.color.category_blue_text));
+                if(mode!=1)  recyclerview_category_tomato.setTextColor(itemView.getContext().getColor(R.color.category_blue_text));
+            }else if(item.color.equals("GREEN")){
+                Drawable drawable=itemView.getContext().getResources().getDrawable(R.drawable.rect_radius_low);
+                drawable.setTint(itemView.getContext().getColor(R.color.category_green));
+                recyclerview_category_layout.setBackgroundDrawable(drawable);
+                recyclerview_category_title.setTextColor(itemView.getContext().getColor(R.color.category_green_text));
+                if(mode!=1)  recyclerview_category_tomato.setTextColor(itemView.getContext().getColor(R.color.category_green_text));
+            }else if(item.color.equals("YELLOW")){
+                Drawable drawable=itemView.getContext().getResources().getDrawable(R.drawable.rect_radius_low);
+                drawable.setTint(itemView.getContext().getColor(R.color.category_yellow));
+                recyclerview_category_layout.setBackgroundDrawable(drawable);
+                recyclerview_category_title.setTextColor(itemView.getContext().getColor(R.color.category_yellow_text));
+                if(mode!=1)  recyclerview_category_tomato.setTextColor(itemView.getContext().getColor(R.color.category_yellow_text));
+            }
+            if(item.add_button){
+                //추가 버튼인 경우 회색으로 색상 설정
+                Drawable drawable=itemView.getContext().getResources().getDrawable(R.drawable.rect_radius_low);
+                drawable.setTint(itemView.getContext().getColor(R.color.category_gray));
+                recyclerview_category_layout.setBackgroundDrawable(drawable);
+                recyclerview_category_tomato.setTextColor(itemView.getContext().getColor(R.color.category_gray_text));
+            }
         }
     }
 }
