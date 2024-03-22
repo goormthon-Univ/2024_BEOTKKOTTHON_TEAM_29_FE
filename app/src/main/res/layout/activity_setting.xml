@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingActivity">
+
+    <ImageView
+        android:id="@+id/imageView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onclick_image_edit"
+        app:layout_constraintBottom_toBottomOf="@id/imageView22"
+        app:layout_constraintEnd_toEndOf="@id/imageView22"
+        app:srcCompat="@drawable/profile_edit_background" />
+
+    <ImageView
+        android:id="@+id/imageView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="134dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/profile_background" />
+
+    <ImageView
+        android:id="@+id/setting_image"
+        android:layout_width="106dp"
+        android:layout_height="103dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageView22"
+        app:layout_constraintEnd_toEndOf="@id/imageView22"
+        app:layout_constraintStart_toStartOf="@id/imageView22"
+        app:layout_constraintTop_toTopOf="@id/imageView22"
+        app:srcCompat="@drawable/profile_image" />
+
+    <ImageView
+        android:id="@+id/imageView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onclick_image_edit"
+        app:layout_constraintBottom_toBottomOf="@id/imageView23"
+        app:layout_constraintEnd_toEndOf="@id/imageView23"
+        app:layout_constraintStart_toStartOf="@id/imageView23"
+        app:layout_constraintTop_toTopOf="@id/imageView23"
+        app:srcCompat="@drawable/edit_icon" />
+
+    <EditText
+        android:id="@+id/setting_password"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="602dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/rect_radius"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="20dp"
+        android:textColorHint="@color/purple"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="570dp"
+        android:text="비밀번호"
+        android:textColor="@color/purple"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="322dp"
+        android:text="닉네임"
+        android:textColor="@color/purple"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/setting_email"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="494dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/rect_radius"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="20dp"
+        android:textColorHint="@color/purple"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="462dp"
+        android:text="아이디"
+        android:textColor="@color/purple"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/setting_button"
+        android:layout_width="0dp"
+        android:layout_height="76dp"
+        android:background="#FD6B56"
+        android:text="확인"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/setting_nickname"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="354dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/rect_radius"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="20dp"
+        android:textColorHint="@color/purple"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="36dp"
+        android:onClick="onclick_close"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back_arrow" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="67dp"
+        android:text="계정정보 설정"
+        android:textColor="@color/purple"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

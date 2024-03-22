@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -267,6 +268,11 @@ public class MainActivity extends AppCompatActivity {
         timer.schedule(pause_task,60000);
     }
 
+    public void onclick_setting(View view){
+        Intent setting_intent=new Intent(this,SettingActivity.class);
+        startActivityForResult(setting_intent,101);
+    }
+
     public void onclick_menu(View view){
         Dialog menu_dialog=new Dialog(MainActivity.this);
         menu_dialog.setContentView(R.layout.dialog_menu);
@@ -283,10 +289,12 @@ public class MainActivity extends AppCompatActivity {
                 //뷰 연결하고
                 TextView dialog_menu_nickname=menu_dialog.findViewById(R.id.dialog_menu_nickname);
                 TextView dialog_menu_tomato=menu_dialog.findViewById(R.id.dialog_menu_tomato);
+                ImageView dialog_menu_image=menu_dialog.findViewById(R.id.dialog_menu_image);
 
                 //텍스트,이미지 설정
                 dialog_menu_nickname.setText(data.get("nickname").toString());
                 dialog_menu_tomato.setText(data.get("tomato").toString());
+                dialog_menu_image.setImageBitmap(server_manager.http_request_get_image(data.get("character_url").toString()));
 
             }else{
                 //회원 조회 실패 시 실패 원인 보여줌
