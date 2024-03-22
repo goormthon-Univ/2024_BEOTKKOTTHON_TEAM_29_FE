@@ -1,13 +1,18 @@
 package com.goormthon_univ.tomado.Adapter;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.goormthon_univ.tomado.MainActivity;
 import com.goormthon_univ.tomado.R;
 
 import org.w3c.dom.Comment;
@@ -16,6 +21,8 @@ import java.util.ArrayList;
 
 public class BreakTimeSelAdapter extends RecyclerView.Adapter<BreakTimeSelAdapter.ViewHolder>{
     ArrayList<BreakTimeSel> items=new ArrayList<>();
+
+    int select_position=0;
 
     @NonNull
     @Override
@@ -34,9 +41,25 @@ public class BreakTimeSelAdapter extends RecyclerView.Adapter<BreakTimeSelAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                select_position=position;
                 notifyDataSetChanged();
             }
         });
+
+        if(select_position==position){
+            if(position==1){
+                Drawable drawable_del=holder.itemView.getContext().getResources().getDrawable(R.drawable.rect_radius_bottom);
+                drawable_del.setTint(Color.parseColor("#E2E4E8"));
+                holder.breaktimesel_layout.setBackgroundDrawable(drawable_del);
+                MainActivity.break_time=15;
+            }else{
+                holder.breaktimesel_layout.setBackgroundColor(Color.parseColor("#E2E4E8"));
+                MainActivity.break_time=5;
+            }
+            holder.breaktimesel_layout.setVisibility(View.VISIBLE);
+        }else{
+            holder.breaktimesel_layout.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -51,10 +74,12 @@ public class BreakTimeSelAdapter extends RecyclerView.Adapter<BreakTimeSelAdapte
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView breaktimesel_description;
         TextView breaktimesel_time;
+        ImageView breaktimesel_layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            breaktimesel_layout=itemView.findViewById(R.id.breaktimesel_layout);
             breaktimesel_description=itemView.findViewById(R.id.breaktimesel_description);
             breaktimesel_time=itemView.findViewById(R.id.breaktimesel_time);
         }

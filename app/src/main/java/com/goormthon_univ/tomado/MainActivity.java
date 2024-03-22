@@ -93,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
     //모드 (이지모드 0, 하드모드 1)
     public static String mode;
 
+    //쉬는 시간(기본 5분)
+    public static int break_time=5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

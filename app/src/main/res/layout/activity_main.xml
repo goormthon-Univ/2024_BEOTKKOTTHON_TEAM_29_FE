@@ -114,7 +114,7 @@
             android:layout_marginRight="20dp"
             android:text="뽀모도로 25m"
             android:textColor="@color/purple"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <ImageView
