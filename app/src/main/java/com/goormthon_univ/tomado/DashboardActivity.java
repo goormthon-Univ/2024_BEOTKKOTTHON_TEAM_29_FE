@@ -46,7 +46,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends SwipeDismissBaseActivity {
     private MaterialCalendarView dashboard_calendarView;
     RecyclerView dashboard_category_recyclerview;
 
