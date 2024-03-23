@@ -73,6 +73,28 @@ public class FriendCreateActivity extends AppCompatActivity {
         friend_create_save=findViewById(R.id.friend_create_save);
         friend_create_logout=findViewById(R.id.friend_create_logout);
 
+        //탈퇴버튼
+        friend_create_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if(mode.equals("CREAT")){
+                        Toast.makeText(getApplicationContext(),"클럽 가입 후 탈퇴하실 수 있습니다",Toast.LENGTH_SHORT).show();
+                    }else{
+                        JSONObject js=new JSONObject(server_manager.http_request_delete_json("/clubs?user="+user_id+"&club="+mode));
+                        //JSONArray member_list=new JSONArray(js.get("memberList").toString());
+                        if(js.get("message").toString().equals("클럽 나가기 성공")){
+                        }else{
+                            //회원 가입 실패 시 실패 원인 보여줌
+                            Toast.makeText(getApplicationContext(),js.get("message").toString(),Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         //날짜 표시
         friend_create_date.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date())+" - "+new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         friend_create_date.setOnClickListener(new View.OnClickListener() {
