@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +75,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder>{
         TextView recyclerview_store_tomato;
         TextView recyclerview_store_name;
         ImageView recyclerview_store_image;
+        ImageView recyclerview_store_tomato_image;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,13 +84,24 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder>{
 
             recyclerview_store_layout=itemView.findViewById(R.id.recyclerview_store_layout);
             recyclerview_store_tomato=itemView.findViewById(R.id.recyclerview_store_tomato);
+            recyclerview_store_tomato_image=itemView.findViewById(R.id.recyclerview_store_tomato_image);
             recyclerview_store_name=itemView.findViewById(R.id.recyclerview_store_name);
             recyclerview_store_image=itemView.findViewById(R.id.recyclerview_store_image);
         }
 
         public void setItem(Tomado item){
-            recyclerview_store_tomato.setText(item.tomato);
             recyclerview_store_name.setText(item.name);
+            if(item.buy){
+                recyclerview_store_tomato.setText("소장 중");
+                recyclerview_store_tomato_image.setVisibility(View.GONE);
+
+                Drawable drawable=itemView.getContext().getResources().getDrawable(R.drawable.rect_radius_low);
+                drawable.setTint(Color.parseColor("#CACACA"));
+                recyclerview_store_layout.setBackgroundDrawable(drawable);
+                recyclerview_store_image.setAlpha(50);
+            }else{
+                recyclerview_store_tomato.setText(item.tomato);
+            }
 
             Glide.with(itemView.getContext()).load(item.url).into(recyclerview_store_image);
 

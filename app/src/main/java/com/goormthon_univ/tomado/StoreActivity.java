@@ -49,9 +49,7 @@ public class StoreActivity extends AppCompatActivity {
         store_recyclerview.setLayoutManager(layoutManager_);
         store_recyclerview.setAdapter(store_adapter);
 
-        Tomado t_1=new Tomado("1","https://i.ibb.co/1d94Q4f/image.png","열정맨 토마두","집중을 위한 여정을 떠난 탐험가 토마두, 앞으로 어떤 토마두들을 만나게 될까요?","25");
-
-        //서버에서 불러오기
+        //구매하지 않은 목록 서버에서 불러오기
         try {
             JSONObject json=new JSONObject(server_manager.http_request_get_json("/shop?user="+server_manager.get_user_id((SharedPreferences)getSharedPreferences("preferences", Activity.MODE_PRIVATE))));
 
@@ -68,7 +66,38 @@ public class StoreActivity extends AppCompatActivity {
                             data_detail_find.get("url").toString(),
                             data_detail_find.get("name").toString(),
                             data_detail_find.get("content").toString(),
-                            data_detail_find.get("tomato").toString()
+                            data_detail_find.get("tomato").toString(),
+                            false
+                    );
+                    store_adapter.addItem(tomado);
+                }
+            }else{
+                //캐릭터 조회 실패 시 실패 원인 보여줌
+                Toast.makeText(getApplicationContext(),json.get("message").toString(),Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        //구매한 목록 서버에서 불러오기
+        try {
+            JSONObject json=new JSONObject(server_manager.http_request_get_json("/shop?user="+server_manager.get_user_id((SharedPreferences)getSharedPreferences("preferences", Activity.MODE_PRIVATE))));
+
+            if(json.get("message").toString().equals("캐릭터 조회 성공")){
+                JSONObject json_data=new JSONObject(json.get("data").toString());
+                JSONArray tomado_list_array=new JSONArray(json_data.get("tomadoHaveList").toString());
+
+                for(int i=0;i<tomado_list_array.length();i++){
+                    JSONObject data=new JSONObject(tomado_list_array.get(i).toString());
+
+                    JSONObject detail_find=new JSONObject(server_manager.http_request_get_json("/shop/"+data.get("tomado_id")));
+                    JSONObject data_detail_find=new JSONObject(detail_find.get("data").toString());
+                    Tomado tomado=new Tomado(data_detail_find.get("tomado_id").toString(),
+                            data_detail_find.get("url").toString(),
+                            data_detail_find.get("name").toString(),
+                            data_detail_find.get("content").toString(),
+                            data_detail_find.get("tomato").toString(),
+                            true
                     );
                     store_adapter.addItem(tomado);
                 }
