@@ -51,13 +51,27 @@
         app:layout_constraintTop_toBottomOf="@+id/recyclerview_club_date">
 
         <ImageView
-            android:id="@+id/imageView15"
+            android:id="@+id/recyclerview_member_1"
             android:layout_width="70dp"
             android:layout_height="70dp"
             app:srcCompat="@drawable/profile_image" />
 
         <ImageView
-            android:id="@+id/imageView17"
+            android:id="@+id/recyclerview_member_2"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="-30dp"
+            app:srcCompat="@drawable/profile_image" />
+
+        <ImageView
+            android:id="@+id/recyclerview_member_3"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="-30dp"
+            app:srcCompat="@drawable/profile_image" />
+
+        <ImageView
+            android:id="@+id/recyclerview_member_4"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginLeft="-30dp"
