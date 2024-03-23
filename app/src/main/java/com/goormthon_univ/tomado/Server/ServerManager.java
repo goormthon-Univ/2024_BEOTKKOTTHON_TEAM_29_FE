@@ -12,7 +12,9 @@ import com.goormthon_univ.tomado.Manager.PreferencesManager;
 
 import org.json.JSONObject;
 
-public class ServerManager extends AppCompatActivity {
+import java.io.Serializable;
+
+public class ServerManager extends AppCompatActivity implements Serializable {
     static String url_main="http://43.201.79.243:8080";
     Context context;
 

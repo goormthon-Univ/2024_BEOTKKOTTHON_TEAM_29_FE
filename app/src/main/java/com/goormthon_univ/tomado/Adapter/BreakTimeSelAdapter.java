@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.goormthon_univ.tomado.MainActivity;
 import com.goormthon_univ.tomado.R;
+import com.goormthon_univ.tomado.Thread.TimerThread;
 
 import org.w3c.dom.Comment;
 
@@ -51,10 +52,10 @@ public class BreakTimeSelAdapter extends RecyclerView.Adapter<BreakTimeSelAdapte
                 Drawable drawable_del=holder.itemView.getContext().getResources().getDrawable(R.drawable.rect_radius_bottom);
                 drawable_del.setTint(Color.parseColor("#E2E4E8"));
                 holder.breaktimesel_layout.setBackgroundDrawable(drawable_del);
-                MainActivity.break_time=15;
+                TimerThread.break_time_min=15;
             }else{
                 holder.breaktimesel_layout.setBackgroundColor(Color.parseColor("#E2E4E8"));
-                MainActivity.break_time=5;
+                TimerThread.break_time_min=5;
             }
             holder.breaktimesel_layout.setVisibility(View.VISIBLE);
         }else{

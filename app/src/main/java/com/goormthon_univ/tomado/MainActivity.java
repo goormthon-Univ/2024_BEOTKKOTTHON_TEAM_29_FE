@@ -44,6 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,16 +52,16 @@ import kotlin.jvm.Synchronized;
 
 public class MainActivity extends AppCompatActivity {
     //메인 화면에 있는 뷰들
-    TextView main_time;
-    ProgressBar main_progressbar;
-    ImageView main_play_button;
-    ImageView main_menu_button;
-    TextView main_pause_hint;
+    public static TextView main_time;
+    public static ProgressBar main_progressbar;
+    static ImageView main_play_button;
+    static ImageView main_menu_button;
+    static TextView main_pause_hint;
     TextView main_mode_text;
-    LinearLayout main_mode_layout;
-    LinearLayout main_memo_layout;
-    LinearLayout main_breaktime_layout;
-    ImageView main_gradient;
+    static LinearLayout main_mode_layout;
+    static LinearLayout main_memo_layout;
+    static LinearLayout main_breaktime_layout;
+    static ImageView main_gradient;
     ImageView main_breaktime_arrow;
     Switch main_mode_switch;
     TextView main_category_text;
@@ -70,11 +71,7 @@ public class MainActivity extends AppCompatActivity {
     MainHandler handler=new MainHandler();
 
     //스레드 생성
-    TimerThread timer_th;
-    Timer timer;
-
-    //현재 타이머가 작동 중인지 체크를 위한 변수
-    private boolean timer_isrunning;
+    static TimerThread timer_th;
 
     //드롭다운 체크 변수
     private boolean main_breaktime_layout_dropdown;
@@ -94,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     public static String mode;
 
     //쉬는 시간(기본 5분)
-    public static int break_time=5;
+    int break_time=5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,21 +190,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //타이머 작동 여부 체크 변수 false로 초기화
-        timer_isrunning=false;
-
         //숨겨야 할 뷰들 숨기기
         main_pause_hint.setVisibility(View.GONE);
         main_memo_layout.setVisibility(View.GONE);
         main_gradient.setVisibility(View.GONE);
+
+        //타이머 스레드 객체 생성
+        timer_th=new TimerThread(main_time,main_progressbar,handler,0,10,user_id);
     }
 
-    public class MainHandler extends Handler{
+
+
+    public static class MainHandler extends Handler {
         @Override
         public void handleMessage(Message msg){
             Log.d("",msg.getData().getString("state"));
             if(msg.getData().getString("state").equals("start")){
-                timer_isrunning=true;
+                timer_th.timer_isrunning=true;
                 main_play_button.setImageResource(R.drawable.pause_button);
 
                 //숨겨야할 뷰 숨기기
@@ -215,8 +214,10 @@ public class MainActivity extends AppCompatActivity {
                 main_mode_layout.setVisibility(View.GONE);
                 main_breaktime_layout.setVisibility(View.GONE);
                 main_memo_layout.setVisibility(View.VISIBLE);
+                main_pause_hint.setVisibility(View.GONE);
+                main_gradient.setVisibility(View.GONE);
             }else if(msg.getData().getString("state").equals("stop")){
-                timer_isrunning=false;
+                timer_th.timer_isrunning=false;
                 main_play_button.setImageResource(R.drawable.play_button);
 
                 //숨겨야할 뷰 숨기기
@@ -224,19 +225,48 @@ public class MainActivity extends AppCompatActivity {
                 main_mode_layout.setVisibility(View.VISIBLE);
                 main_breaktime_layout.setVisibility(View.VISIBLE);
                 main_memo_layout.setVisibility(View.GONE);
+                main_pause_hint.setVisibility(View.GONE);
+                main_gradient.setVisibility(View.GONE);
 
                 //시계 초기화
                 main_time.setText(String.format("%d : %02d",25,00));
 
                 //프로그래스바 초기화
                 main_progressbar.setProgress(0);
+            }else if(msg.getData().getString("state").equals("pause")){
+                main_play_button.setImageResource(R.drawable.resume_button);
+                main_menu_button.setVisibility(View.VISIBLE);
+                main_memo_layout.setVisibility(View.GONE);
+                main_pause_hint.setVisibility(View.VISIBLE);
+                main_gradient.setVisibility(View.VISIBLE);
+                /*
+                if(timer_th.timer_pause){
+                    timer_isrunning=false;
+                    main_play_button.setImageResource(R.drawable.play_button);
+                    main_menu_button.setVisibility(View.VISIBLE);
+
+                    //숨겨야 할 뷰들 숨기기
+                    main_pause_hint.setVisibility(View.GONE);
+                    main_memo_layout.setVisibility(View.GONE);
+                    main_gradient.setVisibility(View.GONE);
+
+                    //만들어야 할 뷰 보이기
+                    main_mode_layout.setVisibility(View.VISIBLE);
+                    main_breaktime_layout.setVisibility(View.VISIBLE);
+
+                    //시계 초기화
+                    main_time.setText(String.format("%d : %02d",25,00));
+
+                    //프로그래스바 초기화
+                    main_progressbar.setProgress(0);
+                }*/
             }
         }
     };
 
-    public void timer_start(View view) throws InterruptedException {
+    public void timer_start(View view) {
         //현재 타이머가 작동 중인지 여부 체크
-        if(timer_isrunning){
+        if(timer_th.timer_isrunning){
             if(timer_th.timer_pause){
                 //일시 중지 상태인 경우
                 timer_th.timer_pause=false;
@@ -245,38 +275,45 @@ public class MainActivity extends AppCompatActivity {
                 main_pause_hint.setVisibility(View.GONE);
                 main_memo_layout.setVisibility(View.VISIBLE);
                 main_gradient.setVisibility(View.GONE);
+
+                Intent intent_timerservice=new Intent(getApplicationContext(), TimerService.class);
+                /*intent_timerservice.putExtra("timer_pause_stop","true");
+                intent_timerservice.putExtra("timer_stop","");
+                intent_timerservice.putExtra("start","");
+                intent_timerservice.putExtra("timer_pause","");*/
+                intent_timerservice.putExtra("mode","pause_true");
+                startService(intent_timerservice);
             }else{
                 timer_th.timer_pause=true;
 
-                main_play_button.setImageResource(R.drawable.resume_button);
-                main_menu_button.setVisibility(View.VISIBLE);
-                main_memo_layout.setVisibility(View.GONE);
-                main_pause_hint.setVisibility(View.VISIBLE);
-                main_gradient.setVisibility(View.VISIBLE);
-
                 //1분 안에 재시작하지 않으면 종료됨
-                timer_pause();
+                Intent intent_timerservice=new Intent(getApplicationContext(), TimerService.class);
+                /*intent_timerservice.putExtra("timer_pause_stop","");
+                intent_timerservice.putExtra("timer_stop","");
+                intent_timerservice.putExtra("start","");
+                intent_timerservice.putExtra("timer_pause","true");*/
+                intent_timerservice.putExtra("mode","pause_false");
+                startService(intent_timerservice);
             }
         }else{
             if(category_id!=null){
                 //새로운 시작인 경우
-                //기존에 존재하는 스레드가 있는지 우선 체크
-                if(timer_th!=null){
-                    timer_th.interrupt();
-                }
 
-                int break_time;
                 if(pomodoro_mode){
                     //하드 뽀모도로 모드인 경우
                     break_time=5;
                 }else{
                     break_time=20;
                 }
-                timer_th=new TimerThread(main_time,main_progressbar,handler,0,10,break_time,user_id);
-                timer_th.create_task(findViewById(R.id.main_task).toString());
-                timer_th.start();
+                Intent intent_timerservice=new Intent(getApplicationContext(), TimerService.class);
+                /*intent_timerservice.putExtra("timer_pause_stop","true");
+                intent_timerservice.putExtra("timer_stop","true");
+                intent_timerservice.putExtra("start","true");
+                intent_timerservice.putExtra("timer_pause","");*/
+                intent_timerservice.putExtra("mode","start");
+                startService(intent_timerservice);
+                timer_th.timer_isrunning=true;
 
-                timer_isrunning=true;
                 main_play_button.setImageResource(R.drawable.pause_button);
 
                 //숨겨야할 뷰 숨기기
@@ -289,44 +326,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-    }
-
-    public void timer_pause(){
-        //타이머 생성
-        timer=new Timer();
-        TimerTask pause_task=new TimerTask(){
-            @Override
-            public void run() {
-                //1분 뒤에 작동
-                timer_th.timer_stop();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(timer_th.timer_pause){
-                            timer_isrunning=false;
-                            main_play_button.setImageResource(R.drawable.play_button);
-                            main_menu_button.setVisibility(View.VISIBLE);
-
-                            //숨겨야 할 뷰들 숨기기
-                            main_pause_hint.setVisibility(View.GONE);
-                            main_memo_layout.setVisibility(View.GONE);
-                            main_gradient.setVisibility(View.GONE);
-
-                            //만들어야 할 뷰 보이기
-                            main_mode_layout.setVisibility(View.VISIBLE);
-                            main_breaktime_layout.setVisibility(View.VISIBLE);
-
-                            //시계 초기화
-                            main_time.setText(String.format("%d : %02d",25,00));
-
-                            //프로그래스바 초기화
-                            main_progressbar.setProgress(0);
-                        }
-                    }
-                });
-            }
-        };
-        timer.schedule(pause_task,60000);
     }
 
     public void onclick_setting(View view){
