@@ -32,7 +32,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
     public MenuAdapter(Context context){
         Menu m1=new Menu(R.drawable.dashboard,"모아보기");
         Menu m2=new Menu(R.drawable.user_friends,"함께하기");
-        Menu m3=new Menu(R.drawable.dictionary_language_book,"토마보감");
+        Menu m3=new Menu(R.drawable.dictionary_language_book,"토마도감");
         Menu m4=new Menu(R.drawable.store,"토마상점");
         Menu m5=new Menu(R.drawable.note,"긴급메모");
         items.add(m1);
