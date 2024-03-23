@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.goormthon_univ.tomado.MainActivity;
 import com.goormthon_univ.tomado.R;
 import com.goormthon_univ.tomado.Server.ServerManager;
@@ -88,7 +89,8 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder>{
         public void setItem(Tomado item){
             recyclerview_store_tomato.setText(item.tomato);
             recyclerview_store_name.setText(item.name);
-            recyclerview_store_image.setImageBitmap(server_manager.http_request_get_image(item.url));
+
+            Glide.with(itemView.getContext()).load(item.url).into(recyclerview_store_image);
 
             Dialog store_dialog=new Dialog(itemView.getContext());
             store_dialog.setContentView(R.layout.dialog_store);
@@ -135,7 +137,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder>{
                     }
                 }
             });
-            dialog_store_image.setImageBitmap(server_manager.http_request_get_image(item.url));
+            Glide.with(itemView.getContext()).load(item.url).into(dialog_store_image);
 
             recyclerview_store_layout.setOnClickListener(new View.OnClickListener() {
                 @Override

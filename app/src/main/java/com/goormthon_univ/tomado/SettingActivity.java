@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.goormthon_univ.tomado.Server.ServerManager;
 
 import org.json.JSONException;
@@ -58,7 +59,7 @@ public class SettingActivity extends AppCompatActivity {
                 setting_nickname.setText(data.get("nickname").toString());
                 setting_email.setText(data.get("login_id").toString());
                 //setting_password.setText(data.get("password").toString());
-                setting_image.setImageBitmap(server_manager.http_request_get_image(data.get("character_url").toString()));
+                Glide.with(getApplicationContext()).load(data.get("character_url").toString()).into(setting_image);
             }else{
                 //회원 조회 실패 시 실패 원인 보여줌
                 Toast.makeText(getApplicationContext(),json.get("message").toString(),Toast.LENGTH_SHORT).show();

@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/recyclerview_category_title"
+            android:id="@+id/recyclerview_dictionary_image"
             android:layout_width="61dp"
             android:layout_height="63dp"
             android:layout_gravity="center|center_horizontal|center_vertical"

@@ -13,11 +13,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -130,7 +128,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         //뷰들
         recyclerview_category_layout=holder.itemView.findViewById(R.id.recyclerview_category_layout);
-        recyclerview_category_title=holder.itemView.findViewById(R.id.recyclerview_category_title);
+        recyclerview_category_title=holder.itemView.findViewById(R.id.recyclerview_dictionary_image);
         recyclerview_category_tomato=holder.itemView.findViewById(R.id.recyclerview_category_tomato);
 
         recyclerview_category_add=holder.itemView.findViewById(R.id.recyclerview_category_add);
@@ -516,7 +514,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
             //뷰들
             recyclerview_category_layout=itemView.findViewById(R.id.recyclerview_category_layout);
-            recyclerview_category_title=itemView.findViewById(R.id.recyclerview_category_title);
+            recyclerview_category_title=itemView.findViewById(R.id.recyclerview_dictionary_image);
             recyclerview_category_tomato=itemView.findViewById(R.id.recyclerview_category_tomato);
             recyclerview_category_add=itemView.findViewById(R.id.recyclerview_category_add);
 

@@ -21,7 +21,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/recyclerview_category_title"
+        android:id="@+id/recyclerview_dictionary_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="프로그래밍 기초"

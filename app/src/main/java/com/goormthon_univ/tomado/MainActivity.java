@@ -30,6 +30,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.goormthon_univ.tomado.Adapter.BreakTimeSel;
 import com.goormthon_univ.tomado.Adapter.BreakTimeSelAdapter;
 import com.goormthon_univ.tomado.Adapter.Category;
@@ -354,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
                 //텍스트,이미지 설정
                 dialog_menu_nickname.setText(data.get("nickname").toString());
                 dialog_menu_tomato.setText(data.get("tomato").toString());
-                dialog_menu_image.setImageBitmap(server_manager.http_request_get_image(data.get("character_url").toString()));
+                Glide.with(this).load(data.get("character_url").toString()).into(dialog_menu_image);
 
             }else{
                 //회원 조회 실패 시 실패 원인 보여줌
