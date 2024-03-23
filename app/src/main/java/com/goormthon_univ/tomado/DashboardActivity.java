@@ -26,16 +26,25 @@ import com.goormthon_univ.tomado.Adapter.Category;
 import com.goormthon_univ.tomado.Adapter.CategoryAdapter;
 import com.goormthon_univ.tomado.Adapter.CategoryDecoration;
 import com.goormthon_univ.tomado.Adapter.Memo;
+import com.goormthon_univ.tomado.Decorator.DecoratorLevel1;
+import com.goormthon_univ.tomado.Decorator.DecoratorLevel2;
+import com.goormthon_univ.tomado.Decorator.DecoratorLevel3;
+import com.goormthon_univ.tomado.Decorator.DecoratorLevel4;
 import com.goormthon_univ.tomado.Manager.PreferencesManager;
 import com.goormthon_univ.tomado.Server.ServerManager;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class DashboardActivity extends AppCompatActivity {
     private MaterialCalendarView dashboard_calendarView;
@@ -111,6 +120,20 @@ public class DashboardActivity extends AppCompatActivity {
                 dialog_calendar_fn(date);
             }
         });
+
+        dashboard_calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @Override
+            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+                calendar_deco(String.valueOf(date.getMonth()));
+            }
+        });
+
+        //달력 색칠
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            LocalDate now = LocalDate.now();
+            String formatedNow = now.format(DateTimeFormatter.ofPattern("MM"));
+            calendar_deco(formatedNow);
+        }
     }
 
     public void onclick_close(View view){
@@ -163,5 +186,56 @@ public class DashboardActivity extends AppCompatActivity {
         calendar_adapter.notifyDataSetChanged();
 
         calendar_dialog.show();
+    }
+
+    public void calendar_deco(String month){
+        //달력 색칠 목록
+        ArrayList<CalendarDay> day_list_1 = new ArrayList<>();
+        ArrayList<CalendarDay> day_list_2 = new ArrayList<>();
+        ArrayList<CalendarDay> day_list_3 = new ArrayList<>();
+        ArrayList<CalendarDay> day_list_4 = new ArrayList<>();
+
+        //달력 토마두 개수 서버에서 불러오기
+        //서버에서 불러오기
+        try {
+            JSONObject json=new JSONObject(server_manager.http_request_get_json("/tasks?user="+server_manager.get_user_id((SharedPreferences)getSharedPreferences("preferences", Activity.MODE_PRIVATE))+"&month="+month));
+
+            if(json.get("message").toString().equals("월별 토마 개수 조회 성공")){
+                JSONObject json_data=new JSONObject(json.get("data").toString());
+                JSONArray memo_list_array=new JSONArray(json_data.get("tomaCountList").toString());
+
+                for(int i=0;i< memo_list_array.length();i++){
+                    JSONObject data=new JSONObject(memo_list_array.get(i).toString());
+
+                    String[] date_split=data.get("date").toString().split("-");
+                    if(Integer.parseInt(data.get("tomaCount").toString())>=0 && Integer.parseInt(data.get("tomaCount").toString())<=3){
+                        //레벨 1
+                        day_list_1.add(CalendarDay.from(Integer.parseInt(date_split[0]),Integer.parseInt(date_split[1]),Integer.parseInt(date_split[2])));
+                    }else if(Integer.parseInt(data.get("tomaCount").toString())>=4 && Integer.parseInt(data.get("tomaCount").toString())<=7){
+                        //레벨 2
+                        day_list_2.add(CalendarDay.from(Integer.parseInt(date_split[0]),Integer.parseInt(date_split[1]),Integer.parseInt(date_split[2])));
+                    }else if(Integer.parseInt(data.get("tomaCount").toString())>=7 && Integer.parseInt(data.get("tomaCount").toString())<=10){
+                        //레벨 3
+                        day_list_3.add(CalendarDay.from(Integer.parseInt(date_split[0]),Integer.parseInt(date_split[1]),Integer.parseInt(date_split[2])));
+                    }else{
+                        //레벨 4
+                        day_list_4.add(CalendarDay.from(Integer.parseInt(date_split[0]),Integer.parseInt(date_split[1]),Integer.parseInt(date_split[2])));
+                    }
+                    DecoratorLevel1 decorator_level1 = new DecoratorLevel1(day_list_1,this);
+                    DecoratorLevel2 decorator_level2 = new DecoratorLevel2(day_list_2,this);
+                    DecoratorLevel3 decorator_level3 = new DecoratorLevel3(day_list_3,this);
+                    DecoratorLevel4 decorator_level4 = new DecoratorLevel4(day_list_4,this);
+                    dashboard_calendarView.addDecorator(decorator_level1);
+                    dashboard_calendarView.addDecorator(decorator_level2);
+                    dashboard_calendarView.addDecorator(decorator_level3);
+                    dashboard_calendarView.addDecorator(decorator_level4);
+                }
+            }else{
+                //월별 토마 개수 조회 실패 시 실패 원인 보여줌
+                Toast.makeText(getApplicationContext(),json.get("message").toString(),Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
