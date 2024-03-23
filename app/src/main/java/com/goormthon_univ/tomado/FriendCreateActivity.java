@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.goormthon_univ.tomado.Manager.PreferencesManager;
 import com.goormthon_univ.tomado.Server.ServerManager;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,6 +41,14 @@ public class FriendCreateActivity extends AppCompatActivity {
     CheckBox friend_create_check;
     TextView friend_create_save;
     TextView friend_create_logout;
+
+    /*
+    편집인지 생성인지 구분
+
+    수정: 편집
+    CREAT: 생성
+     */
+    String mode="";
 
 
     @Override
@@ -79,34 +89,85 @@ public class FriendCreateActivity extends AppCompatActivity {
             }
         });
 
+        //생성이 아닐 경우 정보 불러오기
+        Intent intent=getIntent();
+        mode=intent.getStringExtra("mode");
+        if(mode.equals("CREAT")){
+            //
+        }else{
+            try {
+                JSONObject js=new JSONObject(server_manager.http_request_get_json("/clubs?user="+user_id+"&club="+mode));
+                //JSONArray member_list=new JSONArray(js.get("memberList").toString());
+                if(js.get("message").toString().equals("토마 클럽 조회 성공")){
+                    JSONObject data=new JSONObject(js.get("data").toString());
+                    friend_create_title.setText(data.get("title").toString());
+                    //friend_create_member_number.setText(member_list.length());
+                    friend_create_goal.setText(data.get("goal").toString());
+                    friend_create_memo.setText(data.get("memo").toString());
+                }else{
+                    //회원 가입 실패 시 실패 원인 보여줌
+                    Toast.makeText(getApplicationContext(),js.get("message").toString(),Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         friend_create_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    String[] date_arr=friend_create_date.getText().toString().split(" - ");
-                    JSONObject parms=new JSONObject();
-                    parms.put("user_id",user_id);
-                    parms.put("title",friend_create_title.getText().toString());
-                    parms.put("color","RED"); //색상 기본값 RED로 설정
-                    parms.put("member_number",friend_create_member_number.getText());
-                    parms.put("goal",friend_create_goal.getText().toString());
-                    parms.put("memo",friend_create_memo.getText().toString());
-                    parms.put("start_date",date_arr[0]);
-                    parms.put("end_date",date_arr[1]);
-                    JSONObject js=new JSONObject(server_manager.http_request_post_json("/clubs",parms));
+                if(mode.equals("CREAT")){
+                    try {
+                        String[] date_arr=friend_create_date.getText().toString().split(" - ");
+                        JSONObject parms=new JSONObject();
+                        parms.put("user_id",user_id);
+                        parms.put("title",friend_create_title.getText().toString());
+                        parms.put("member_number",friend_create_member_number.getText());
+                        parms.put("goal",friend_create_goal.getText().toString());
+                        parms.put("memo",friend_create_memo.getText().toString());
+                        parms.put("start_date",date_arr[0]);
+                        parms.put("end_date",date_arr[1]);
+                        JSONObject js=new JSONObject(server_manager.http_request_post_json("/clubs",parms));
 
-                    Log.d("",js.toString());
+                        Log.d("",js.toString());
 
-                    if(js.get("message").toString().equals("클럽 생성 성공")){
-                        Log.d("","클럽 생성 성공");
-                        //닫기
-                        finish();
-                    }else{
-                        //회원 가입 실패 시 실패 원인 보여줌
-                        Toast.makeText(getApplicationContext(),js.get("message").toString(),Toast.LENGTH_SHORT).show();
+                        if(js.get("message").toString().equals("클럽 생성 성공")){
+                            Log.d("","클럽 생성 성공");
+                            //닫기
+                            finish();
+                        }else{
+                            //회원 가입 실패 시 실패 원인 보여줌
+                            Toast.makeText(getApplicationContext(),js.get("message").toString(),Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
                     }
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                }else{
+                    try {
+                        String[] date_arr=friend_create_date.getText().toString().split(" - ");
+                        JSONObject parms=new JSONObject();
+                        parms.put("user_id",user_id);
+                        parms.put("club_id",mode);
+                        parms.put("title",friend_create_title.getText().toString());
+                        parms.put("member_number",friend_create_member_number.getText());
+                        parms.put("goal",friend_create_goal.getText().toString());
+                        parms.put("memo",friend_create_memo.getText().toString());
+                        parms.put("end_date",date_arr[1]);
+                        JSONObject js=new JSONObject(server_manager.http_request_put_json("/clubs",parms));
+
+                        Log.d("",js.toString());
+
+                        if(js.get("message").toString().equals("클럽 수정 성공")){
+                            Log.d("","클럽 수정 성공");
+                            //닫기
+                            finish();
+                        }else{
+                            //회원 가입 실패 시 실패 원인 보여줌
+                            Toast.makeText(getApplicationContext(),js.get("message").toString(),Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });

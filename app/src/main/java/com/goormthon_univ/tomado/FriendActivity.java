@@ -104,6 +104,7 @@ public class FriendActivity extends AppCompatActivity {
 
         //토마클럽 만들기 버튼 리스너
         Intent friend_create_intent=new Intent(this,FriendCreateActivity.class);
+        friend_create_intent.putExtra("mode","CREAT");
         friend_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
