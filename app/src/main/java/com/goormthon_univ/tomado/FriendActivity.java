@@ -76,7 +76,7 @@ public class FriendActivity extends AppCompatActivity {
                     JSONObject data=new JSONObject(club_list_array.get(i).toString());
                     Club c_1=new Club(data.get("club_id").toString(),
                             data.get("title").toString(),
-                            data.get("colorType").toString(),
+                            "",//data.get("colorType").toString(),
                             data.get("goal").toString(),
                             data.get("current_amount").toString(),
                             data.get("memo").toString(),

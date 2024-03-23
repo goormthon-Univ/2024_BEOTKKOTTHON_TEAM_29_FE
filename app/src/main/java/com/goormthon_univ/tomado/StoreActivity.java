@@ -57,7 +57,7 @@ public class StoreActivity extends AppCompatActivity {
 
             if(json.get("message").toString().equals("캐릭터 조회 성공")){
                 JSONObject json_data=new JSONObject(json.get("data").toString());
-                JSONArray tomado_list_array=new JSONArray(json_data.get("tomadoList").toString());
+                JSONArray tomado_list_array=new JSONArray(json_data.get("tomadoNotHaveList").toString());
 
                 for(int i=0;i<tomado_list_array.length();i++){
                     JSONObject data=new JSONObject(tomado_list_array.get(i).toString());

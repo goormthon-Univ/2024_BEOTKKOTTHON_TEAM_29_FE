@@ -275,7 +275,15 @@ public class TimerService extends Service {
                 now_datetime=null;
             }
             parms.put("created_at",now_datetime.toString());
-            JSONObject js=new JSONObject(server_manager.http_request_post_json("/tasks",parms));
+            JSONObject js;
+            if(MainActivity.mode=="0"){
+                //이지 모드 (1개 적립)
+                js=new JSONObject(server_manager.http_request_post_json("/tasks/toma",parms));
+            }else{
+                //하드 모드 (3개 적립)
+                js=new JSONObject(server_manager.http_request_post_json("/tasks/hard",parms));
+            }
+
 
             if(js.get("message").toString().equals("Task 생성 성공")){
                 Log.d("","Task 생성 성공");
