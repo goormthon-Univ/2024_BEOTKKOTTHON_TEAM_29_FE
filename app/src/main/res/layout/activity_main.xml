@@ -98,7 +98,7 @@
         android:id="@+id/main_breaktime_layout"
         android:layout_width="217dp"
         android:layout_height="47dp"
-        android:layout_marginTop="531dp"
+        android:layout_marginTop="562dp"
         android:background="@drawable/rect_radius"
         android:gravity="center"
         android:orientation="horizontal"
